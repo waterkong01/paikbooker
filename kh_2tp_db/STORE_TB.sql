@@ -16,10 +16,8 @@ CREATE TABLE STORE_TB(
 	store_map VARCHAR2(50) NOT NULL, -- 매장 위치(위도, 경도)
 	store_phone VARCHAR2(15) NOT NULL, -- 매장 연락처
 	--UNIQUE 제약조건
-	CONSTRAINT unique_store_combination UNIQUE (store_name),
-    CONSTRAINT unique_store_combination2 UNIQUE (store_addr),
-    CONSTRAINT unique_store_combination3 UNIQUE (store_map),
-    CONSTRAINT unique_store_combination4 UNIQUE (store_phone)
+	CONSTRAINT unique_store UNIQUE (store_name),
+	CONSTRAINT unique_store2 UNIQUE (store_name, store_phone)
 );
 
 --매장_더미 데이터 생성

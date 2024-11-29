@@ -23,6 +23,7 @@
 			}
 		}
 	},
+	"virtual-models": {"oracle_thin-19376947b44-2b8aa684f54768f8":{"PAIKBOOKER":{"@properties":{"erd.diagram.state":{"serialized":"\u003cdiagram version\u003d\"1\" name\u003d\"empty\" time\u003d\"202411291736\"\u003e\u003centities/\u003e\u003crelations/\u003e\u003c/diagram\u003e"}}}}},
 	"connection-types": {
 		"dev": {
 			"name": "Development",

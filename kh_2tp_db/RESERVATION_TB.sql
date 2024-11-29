@@ -15,19 +15,20 @@ CREATE TABLE RESERVATION_TB (
 	store_phone VARCHAR2(15) NOT NULL, 	/*매장 연락처*/
 	r_person_cnt INTEGER NOT NULL,		/*방문 인원*/
 	r_time VARCHAR2(20) NOT NULL,		/*방문 시간*/
-	r_submit_time DATE DEFAULT SYSDATE,		/*예약 완료 날짜/시간*/
-	--	제약조건 예약_사용자
+	r_submit_time DATE DEFAULT SYSDATE,	/*예약 완료 날짜/시간*/
+	--	외래키제약조건
 	CONSTRAINT fk_reservation_user
 		FOREIGN KEY (user_id, user_name)
 		REFERENCES USER_TB (user_id, user_name)
 		ON DELETE CASCADE,
-	--	제약조건 예약_매장
 	CONSTRAINT fk_reservation_store
 		FOREIGN KEY (store_name, store_phone)
 		REFERENCES STORE_TB (store_name, store_phone)
 		ON DELETE CASCADE,
 	--UNIQUE 제약조건
-	CONSTRAINT unique_reservation_combination UNIQUE (r_no, user_id)
+	CONSTRAINT unique_reservation UNIQUE (r_time),
+	CONSTRAINT unique_reservation2 UNIQUE (r_no, r_submit_time),
+	CONSTRAINT unique_reservation3 UNIQUE (user_id, store_name, r_time, r_submit_time)
 );
 
 --예약_더미 데이터 생성
