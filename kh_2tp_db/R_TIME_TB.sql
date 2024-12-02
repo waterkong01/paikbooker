@@ -55,7 +55,7 @@ SELECT * FROM R_TIME_TB;	/*전체 예약시간 조회*/
 
 DROP TABLE R_TIME_TB;		/*예약시간 테이블 삭제*/
 
-DROP SEQUENCE R_TIME_NO_SEQ;/*예약시간 시퀀스 삭제*/
+DROP SEQUENCE R_TIME_NO_SEQ; /*예약시간 시퀀스 삭제*/
 
 --DELETE FROM MEMBER_INFO WHERE MEMBER_ID = ;
 

@@ -34,7 +34,7 @@ SELECT * FROM USER_TB;	/*전체 유저 조회*/
 
 DROP TABLE USER_TB;		/*유저 테이블 삭제*/
 
-DROP SEQUENCE USER_NO_SEQ;/*유저 시퀀스 삭제*/
+DROP SEQUENCE USER_NO_SEQ; /*유저 시퀀스 삭제*/
 
 --DELETE FROM MEMBER_INFO WHERE MEMBER_ID = ;
 

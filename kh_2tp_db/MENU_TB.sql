@@ -22,7 +22,7 @@ SELECT * FROM MENU_TB;	/*전체 리뷰 조회*/
 
 DROP TABLE MENU_TB;		/*리뷰 테이블 삭제*/
 
-DROP SEQUENCE MENU_NO_SEQ;/*리뷰 시퀀스 삭제*/
+DROP SEQUENCE MENU_NO_SEQ; /*리뷰 시퀀스 삭제*/
 
 --DELETE FROM MEMBER_INFO WHERE MEMBER_ID = ;
 

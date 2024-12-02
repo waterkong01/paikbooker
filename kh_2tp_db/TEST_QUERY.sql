@@ -4,7 +4,7 @@ INCREMENT BY 1
 NOCACHE
 NOCYCLE;
 
-CREATE TABLE reservations (
+CREATE TABLE test_reservations (
     reservation_id NUMBER PRIMARY KEY,   -- 예약 ID (PK)
     customer_name VARCHAR2(50) NOT NULL, -- 고객 이름
     phone_number VARCHAR2(15) NOT NULL, -- 고객 전화번호
@@ -22,7 +22,7 @@ BEGIN
     :NEW.reservation_id := reservation_seq.NEXTVAL;
 END;
 
-INSERT INTO reservations (customer_name, phone_number, reservation_date, reservation_time, num_people, special_request)
+INSERT INTO test_reservations (customer_name, phone_number, reservation_date, reservation_time, num_people, special_request)
 VALUES
     ('홍길동', '010-1234-5678', TO_DATE('2024-12-01', 'YYYY-MM-DD'), '12:00:00', 2, '창가 자리 부탁드립니다.');
 INSERT INTO reservations (customer_name, phone_number, reservation_date, reservation_time, num_people, special_request)
@@ -53,3 +53,8 @@ INSERT INTO reservations (customer_name, phone_number, reservation_date, reserva
 VALUES
     ('이효리', '010-8888-9999', TO_DATE('2024-12-01', 'YYYY-MM-DD'), '21:00:00', 2, '기념일 케이크 준비 가능 여부 확인');
 
+
+DROP TABLE reservations;		/*테이블 삭제*/
+DROP SEQUENCE reservation_seq; /*시퀀스 삭제*/
+
+COMMIT;
