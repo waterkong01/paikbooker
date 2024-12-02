@@ -18,7 +18,7 @@ CREATE TABLE STORE_TB(
 	store_phone VARCHAR2(15) NOT NULL, -- 매장 연락처
 	--UNIQUE 제약조건
 	CONSTRAINT unique_store1 UNIQUE (store_name),
-	CONSTRAINT unique_store2 UNIQUE (store_no, store_name, store_phone)
+	CONSTRAINT unique_store2 UNIQUE (store_no, store_name, store_phone, brand_name)
 );
 
 --매장_더미 데이터 생성

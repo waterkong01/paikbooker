@@ -12,7 +12,7 @@ CREATE TABLE REVIEW_TB (
 	user_id VARCHAR2(20) NOT NULL,		/*사용자 아이디*/
 	rv_date DATE DEFAULT SYSDATE,		/*리뷰 작성일*/
 	store_name VARCHAR2(50),			/*예약 매장명*/
-	r_submit_time VARCHAR2(20) DEFAULT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'),	/*예약 완료 날짜/시간*/
+	r_submit_time DATE DEFAULT SYSDATE,	/*예약 완료 날짜/시간*/
 	r_no INTEGER NOT NULL,				/*예약 번호*/
 	rv_price DECIMAL(3, 1) NOT NULL,	/*별점(가격)*/
 	rv_taste DECIMAL(3, 1) NOT NULL,	/*별점(맛)*/
@@ -40,7 +40,7 @@ CREATE TABLE REVIEW_TB (
 
 --리뷰_더미 데이터 생성
 INSERT INTO REVIEW_TB (rv_no, user_id, rv_date, store_name, r_submit_time, r_no, rv_price, rv_taste, rv_vibe, rv_kind)
-VALUES (RV_NO_SEQ.NEXTVAL, 'asdf1234', TO_DATE('2024-11-29', 'YYYY-MM-DD'), '롤링파스타 가로수길점', TO_DATE('2024-11-28', 'YYYY-MM-DD'), 1, 5.0, 4.5, 4.0, 5.0);
+VALUES (RV_NO_SEQ.NEXTVAL, 'asdf1234', SYSDATE + INTERVAL '1' HOUR, '롤링파스타 가로수길점', TO_DATE('2024-12-02 21:45:14', 'YYYY-MM-DD HH24:MI:SS'), 1, 5.0, 4.5, 4.0, 5.0);
 
 --리뷰_테스트용 쿼리문
 SELECT * FROM REVIEW_TB;	/*전체 리뷰 조회*/
@@ -52,3 +52,4 @@ DROP SEQUENCE RV_NO_SEQ;	/*리뷰 시퀀스 삭제*/
 --DELETE FROM MEMBER_INFO WHERE MEMBER_ID = ;
 
 COMMIT;
+
