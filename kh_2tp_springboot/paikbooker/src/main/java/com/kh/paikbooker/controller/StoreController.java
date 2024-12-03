@@ -5,11 +5,7 @@ import com.kh.paikbooker.vo.ReservationVO;
 import com.kh.paikbooker.vo.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @RestController

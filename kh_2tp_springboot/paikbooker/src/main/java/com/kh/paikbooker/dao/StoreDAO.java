@@ -2,6 +2,7 @@ package com.kh.paikbooker.dao;
 
 import com.kh.paikbooker.vo.ReservationVO;
 import com.kh.paikbooker.vo.StoreVO;
+import org.apache.catalina.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -75,8 +76,6 @@ public class StoreDAO {
         }
         return times;
     }
-
-
 
 
 }

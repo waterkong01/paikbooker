@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import StoreMap from "./StoreMap";
 
 const StoreDetail = () => {
 
@@ -13,7 +13,7 @@ const StoreDetail = () => {
   const [selectedPersonCnt, setSelectedPersonCnt] = useState(null); // 선택된 인원 수 상태
 
 
-  // store 정보 가져오기
+  // 특정 매장 조회
   useEffect(() => {
     axios
       .get(`http://localhost:8111/stores/${storeNo}`)
@@ -23,7 +23,7 @@ const StoreDetail = () => {
       );
   }, [storeNo]);
 
-  // 예약된 시간 목록 가져오기
+  // 예약 불가능 시간 조회
   useEffect(() => {
     const selectedDate = new Date().toISOString().split("T")[0]; // 오늘 날짜
     axios
@@ -93,6 +93,7 @@ const StoreDetail = () => {
       return;
     }
 
+    // 새로운 예약 생성
     // 예약 정보 보내기
     const reservationData = {
       userId: "로그인 아이디", // 로그인 정보에서 가져와야 함
@@ -182,6 +183,9 @@ const StoreDetail = () => {
       ))}
       {reservationStatus && <p>{reservationStatus}</p>}
       <button onClick={handleReservation}>예약하기</button>
+      <>
+      <StoreMap />
+      </>
     </>
   );
 };
