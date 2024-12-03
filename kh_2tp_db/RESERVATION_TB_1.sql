@@ -35,22 +35,6 @@ CREATE TABLE RESERVATION_TB (
     CONSTRAINT unique_reservation3 UNIQUE (user_id, store_no, store_name, r_time, r_submit_time)
 );
 
--- 트리거 생성
-CREATE OR REPLACE TRIGGER trg_check_reservation_time
-BEFORE INSERT ON RESERVATION_TB
-FOR EACH ROW
-BEGIN
-    -- 예약 날짜가 당일인지 확인
-    IF TRUNC(:new.r_time) != TRUNC(SYSDATE) THEN
-        RAISE_APPLICATION_ERROR(-20001, '예약은 당일만 가능합니다.');
-    END IF;
-
-    -- 예약 시간이 현재 시간 이후인지 확인
-    IF :new.r_time <= SYSDATE THEN
-        RAISE_APPLICATION_ERROR(-20002, '예약 시간은 현재 시간 이후여야 합니다.');
-    END IF;
-END;
-
 --예약_더미 데이터 생성
 INSERT INTO RESERVATION_TB (r_no, user_id, user_name, store_no, store_name, store_phone, r_person_cnt, r_time, r_submit_time, brand_name)
 VALUES (R_NO_SEQ.NEXTVAL, 'asdf1234', '두둥탁', '8', '롤링파스타 가로수길점', '02-543-5688', 3, TO_DATE('2024-12-03 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '롤링파스타');
@@ -76,8 +60,6 @@ SELECT * FROM RESERVATION_TB;	/*전체 예약 조회*/
 DROP TABLE RESERVATION_TB;		/*예약 테이블 삭제*/
 
 DROP SEQUENCE R_NO_SEQ;			/*예약 시퀀스 삭제*/
-
-DROP TRIGGER trg_check_reservation_time; /*트리거 삭제*/
 
 DELETE 
 
