@@ -1,8 +1,24 @@
-import './App.css';
+import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import StoreList from "./pages/stores/StoreList";
+import StoreDetail from "./pages/stores/StoreDetail";
+import Reservation from "./pages/stores/Reservation";
 
 function App() {
   return (
     <>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/stores" element={<StoreList />} />
+            <Route path="/stores/:storeNo" element={<StoreDetail />} />
+            <Route
+              path="/stores/:storeNo/reservations"
+              element={<Reservation />}
+            />
+          </Routes>
+        </Router>
     </>
   );
 }

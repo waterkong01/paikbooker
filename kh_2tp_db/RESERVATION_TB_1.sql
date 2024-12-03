@@ -31,7 +31,7 @@ CREATE TABLE RESERVATION_TB (
 
     -- UNIQUE 제약조건
     CONSTRAINT unique_reservation1 UNIQUE (r_time),
-    CONSTRAINT unique_reservation2 UNIQUE (r_no, r_submit_time),
+    CONSTRAINT unique_reservation2 UNIQUE (r_no, r_time),
     CONSTRAINT unique_reservation3 UNIQUE (user_id, store_no, store_name, r_time, r_submit_time)
 );
 
@@ -40,24 +40,35 @@ CREATE OR REPLACE TRIGGER trg_check_reservation_time
 BEFORE INSERT ON RESERVATION_TB
 FOR EACH ROW
 BEGIN
-    -- 현재 시간 이후로만 예약 가능하도록 설정 (날짜는 제외하고 시간만 비교)
-    IF TO_DATE(TO_CHAR(:new.r_time, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <= TRUNC(SYSDATE) + INTERVAL '0' HOUR THEN
-        RAISE_APPLICATION_ERROR(-20001, '예약 시간은 현재 시간 이후로만 가능합니다.');
+    -- 예약 날짜가 당일인지 확인
+    IF TRUNC(:new.r_time) != TRUNC(SYSDATE) THEN
+        RAISE_APPLICATION_ERROR(-20001, '예약은 당일만 가능합니다.');
+    END IF;
+
+    -- 예약 시간이 현재 시간 이후인지 확인
+    IF :new.r_time <= SYSDATE THEN
+        RAISE_APPLICATION_ERROR(-20002, '예약 시간은 현재 시간 이후여야 합니다.');
     END IF;
 END;
 
 --예약_더미 데이터 생성
 INSERT INTO RESERVATION_TB (r_no, user_id, user_name, store_no, store_name, store_phone, r_person_cnt, r_time, r_submit_time, brand_name)
-VALUES (R_NO_SEQ.NEXTVAL, 'asdf1234', '두둥탁', '8', '롤링파스타 가로수길점', '02-543-5688', 3, SYSDATE + INTERVAL '1' HOUR, TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '롤링파스타');
+VALUES (R_NO_SEQ.NEXTVAL, 'asdf1234', '두둥탁', '8', '롤링파스타 가로수길점', '02-543-5688', 3, TO_DATE('2024-12-03 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '롤링파스타');
 
 INSERT INTO RESERVATION_TB (r_no, user_id, user_name, store_no, store_name, store_phone, r_person_cnt, r_time, r_submit_time, brand_name)
-VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '8', '롤링파스타 가로수길점', '02-543-5688', 5, SYSDATE + INTERVAL '1' HOUR, TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '롤링파스타');
+VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '8', '롤링파스타 가로수길점', '02-543-5688', 5, TO_DATE('2024-12-03 15:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '롤링파스타');
 
 INSERT INTO RESERVATION_TB (r_no, user_id, user_name, store_no, store_name, store_phone, r_person_cnt, r_time, r_submit_time, brand_name)
-VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '7', '한신포차 중앙대점', '02-817-5238', 5, SYSDATE + INTERVAL '1' HOUR, TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차');
+VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '7', '한신포차 중앙대점', '02-817-5238', 5, TO_DATE('2024-12-03 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차');
 
 INSERT INTO RESERVATION_TB (r_no, user_id, user_name, store_no, store_name, store_phone, r_person_cnt, r_time, r_submit_time, brand_name)
-VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '7', '한신포차 중앙대점', '02-817-5238', 5, TO_DATE('2024-12-02 22:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차');
+VALUES (R_NO_SEQ.NEXTVAL, 'qwer1234', '둥두둥', '7', '한신포차 중앙대점', '02-817-5238', 5, TO_DATE('2024-12-03 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차');
+
+
+-- 더미 데이터 삭제
+DELETE FROM RESERVATION_TB WHERE STORE_NO = '8';
+DELETE FROM RESERVATION_TB WHERE STORE_NO = '7';
+
 
 --예약_테스트용 쿼리문
 SELECT * FROM RESERVATION_TB;	/*전체 예약 조회*/

@@ -2,6 +2,7 @@ package com.kh.paikbooker.vo;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -10,17 +11,17 @@ import java.util.Date;
 @NoArgsConstructor // 매개변수가 없는 생성자 (기본 생성자)
 @ToString
 
-public class ReservationVO {
+public class ReviewVO {
 
-    private int rNo;
+    private int rvNo;
     private String userId;
-    private String userName;
-    private int storeNo;
+    private Date rvDate;
     private String storeName;
-    private String storePhone;
-    private int rPersonCnt;
     private Date rTime;
-    private Date rSubmitTime;
-    private String brandName;
+    private int rNo;
+    private BigDecimal rvPrice;
+    private BigDecimal rvTaste;
+    private BigDecimal rvVibe;
+    private BigDecimal rvKind;
 
 }

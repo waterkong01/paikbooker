@@ -1,12 +1,16 @@
-package com.kh.springpractice01.DAO;
+package com.kh.paikbooker.dao;
 
-import com.kh.springpractice01.VO.ReservationVO;
-import com.kh.springpractice01.VO.StoreVO;
+import com.kh.paikbooker.vo.ReservationVO;
+import com.kh.paikbooker.vo.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -27,25 +31,42 @@ public class StoreDAO {
         return jdbcTemplate.queryForObject(sql, new Object[]{storeNo}, new BeanPropertyRowMapper<>(StoreVO.class));
     }
 
-    // 특정 매장 예약 시간 조회 메소드
-    public List<String> getReservedTimes(int storeNo, String date) {
-        String sql = "SELECT R_TIME FROM RESERVATION_TB WHERE STORE_NO = ? AND TRUNC(TO_DATE(R_TIME, 'YYYY-MM-DD HH24:MI:SS')) = TO_DATE(?, 'YYYY-MM-DD')";
-        return jdbcTemplate.queryForList(sql, new Object[]{storeNo, date}, String.class);
+    // 특정 매장의 예약 가능 시간 조회 메서드
+    public List<String> getAvailableTimes(int storeNo, String date, Date storeOpen, Date storeClose) {
+        // Step 1: 이미 예약된 시간 조회
+        String reservedTimesSql = "SELECT TO_CHAR(R_TIME, 'HH24:MI') FROM RESERVATION_TB WHERE STORE_NO = ? AND TRUNC(R_TIME) = TO_DATE(?, 'YYYY-MM-DD')";
+        List<String> reservedTimes = jdbcTemplate.queryForList(reservedTimesSql, new Object[]{storeNo, date}, String.class);
+
+        // Step 2: 영업 시간 기준 예약 가능 시간 계산
+        List<String> allTimes = generateTimes(storeOpen, storeClose); // 모든 시간 생성
+        allTimes.removeAll(reservedTimes); // 예약된 시간 제거
+        return allTimes;
     }
 
-    // 특정 매장 예약 메소드
-    // 실제로 사용자가 입력하는 값은 R_PERSON_CNT와 R_TIME 두개
-    public void addReservation(ReservationVO reservationVO, String userId, String userName, int storeNo, String storeName, String storePhone, String brandName) {
-        String sql = "INSERT INTO RESERVATION_TB (USER_ID, USER_NAME, STORE_NO, STORE_NAME, STORE_PHONE, R_PERSON_CNT, R_TIME, BRAND_NAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // 영업 시간을 기준으로 1시간 간격의 시간 리스트 생성
+    private List<String> generateTimes(Date storeOpen, Date storeClose) {
+        List<String> times = new ArrayList<>();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(storeOpen);
+
+        while (cal.getTime().before(storeClose)) {
+            times.add(new SimpleDateFormat("HH:mm").format(cal.getTime()));
+            cal.add(Calendar.HOUR_OF_DAY, 1);
+        }
+        return times;
+    }
+
+    // 새로운 예약 삽입 메서드 (수정)
+    public void addReservation(ReservationVO reservationVO) {
+        String sql = "INSERT INTO RESERVATION_TB (USER_ID, USER_NAME, STORE_NO, STORE_NAME, STORE_PHONE, R_PERSON_CNT, R_TIME, BRAND_NAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
-                userId,
-                userName,
-                storeNo,
-                storeName,
-                storePhone,
+                reservationVO.getUserId(),
+                reservationVO.getUserName(),
+                reservationVO.getStoreNo(),
+                reservationVO.getStoreName(),
+                reservationVO.getStorePhone(),
                 reservationVO.getRPersonCnt(),
                 reservationVO.getRTime(),
-                brandName);
+                reservationVO.getBrandName());
     }
-
 }

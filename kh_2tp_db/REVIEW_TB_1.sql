@@ -49,7 +49,7 @@ INSERT INTO REVIEW_TB (rv_no, user_id, rv_date, store_name, r_time, r_no, rv_pri
 VALUES (RV_NO_SEQ.NEXTVAL, 'qwer1234', TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차 중앙대점', TO_DATE('2024-12-03 19:00:00', 'YYYY-MM-DD HH24:MI:SS'), 3, 3.0, 1.0, 2.5, 5.0);
 
 INSERT INTO REVIEW_TB (rv_no, user_id, rv_date, store_name, r_time, r_no, rv_price, rv_taste, rv_vibe, rv_kind)
-VALUES (RV_NO_SEQ.NEXTVAL, 'qwer1234', TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차 중앙대점', TO_DATE('2024-12-03 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 4.5, 2.0, 5.0, 3.5, 1.0);
+VALUES (RV_NO_SEQ.NEXTVAL, 'qwer1234', TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS'), '한신포차 중앙대점', TO_DATE('2024-12-03 20:00:00', 'YYYY-MM-DD HH24:MI:SS'), 4, 2.0, 5.0, 3.5, 1.0);
 
 -- 더미 데이터 삭제
 DELETE FROM REVIEW_TB WHERE USER_ID='asdf1234';

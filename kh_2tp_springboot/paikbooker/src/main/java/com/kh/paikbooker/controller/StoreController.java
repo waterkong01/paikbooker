@@ -1,8 +1,8 @@
-package com.kh.springpractice01.CONTROLLER;
+package com.kh.paikbooker.controller;
 
-import com.kh.springpractice01.DAO.StoreDAO;
-import com.kh.springpractice01.VO.ReservationVO;
-import com.kh.springpractice01.VO.StoreVO;
+import com.kh.paikbooker.dao.StoreDAO;
+import com.kh.paikbooker.vo.ReservationVO;
+import com.kh.paikbooker.vo.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,23 +29,23 @@ public class StoreController {
         return storeDAO.getStoreByStoreNo(storeNo);
     }
 
-    // 특정 매장 예약 시간 조회 /stores/storeNo/reservations
-    @GetMapping("/{storeNo}/reservations")
-    public List<String> getReservedTimes(@PathVariable int storeNo, @RequestParam String date) {
-        return storeDAO.getReservedTimes(storeNo, date);
+    // 예약 가능 시간 조회
+    @GetMapping("/{storeNo}/available-times")
+    public List<String> getAvailableTimes(@PathVariable int storeNo, @RequestParam String date) {
+        StoreVO store = storeDAO.getStoreByStoreNo(storeNo);
+        return storeDAO.getAvailableTimes(storeNo, date, store.getStoreOpen(), store.getStoreClose());
     }
 
-    // 특정 매장 예약 /stores/storeNo/reservations
+    // 새로운 예약 생성
     @PostMapping("/{storeNo}/reservations")
     public ResponseEntity<?> addReservation(@PathVariable int storeNo, @RequestBody ReservationVO reservationVO) {
         try {
-
-            // 로그인 정보에서 사용자 ID와 이름 가져오기 (세션 또는 인증 토큰)
-            String userId = "유저아이디";
+            // 예약 생성
             storeDAO.addReservation(reservationVO);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Reservation added successfully.");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Reservation failed : " + e.getMessage());
         }
     }
+
 }
