@@ -5,8 +5,11 @@ import com.kh.paikbooker.vo.ReservationVO;
 import com.kh.paikbooker.vo.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,16 +20,22 @@ public class StoreController {
     @Autowired
     private StoreDAO storeDAO;
 
-    // 전체 매장 리스트 조회 /stores
+    // 전체 매장 조회
     @GetMapping
     public List<StoreVO> getAllStores() {
         return storeDAO.getAllStores();
     }
 
-    // 특정 매장 조회 /stores/storeNo
+    // 특정 매장 조회
     @GetMapping("/{storeNo}")
     public StoreVO getStoreByStoreNo(@PathVariable int storeNo) {
         return storeDAO.getStoreByStoreNo(storeNo);
+    }
+
+    // 예약 불가능 시간 조회
+    @GetMapping("/{storeNo}/reserved-times")
+    public List<String> getReservedTimes(@PathVariable int storeNo, @RequestParam String date) {
+        return storeDAO.getReservedTimes(storeNo, date);
     }
 
     // 예약 가능 시간 조회
@@ -38,13 +47,17 @@ public class StoreController {
 
     // 새로운 예약 생성
     @PostMapping("/{storeNo}/reservations")
-    public ResponseEntity<?> addReservation(@PathVariable int storeNo, @RequestBody ReservationVO reservationVO) {
+    public ResponseEntity<?> addReservation(
+            @PathVariable int storeNo,
+            @RequestParam String userId,
+            @RequestParam String userName,
+            @RequestBody ReservationVO reservationVO) {
         try {
             // 예약 생성
-            storeDAO.addReservation(reservationVO);
-            return ResponseEntity.ok("Reservation added successfully.");
+            storeDAO.addReservation(reservationVO, userId, userName, storeNo);
+            return ResponseEntity.ok("예약 성공");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Reservation failed : " + e.getMessage());
+            return ResponseEntity.badRequest().body("예약 실패 : " + e.getMessage());
         }
     }
 
