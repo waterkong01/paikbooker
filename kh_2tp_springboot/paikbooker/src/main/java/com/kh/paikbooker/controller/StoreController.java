@@ -61,14 +61,14 @@ public class StoreController {
         }
     }
 
-    // 지도) 브랜드별 마커 설정
-    @GetMapping("/{storeNo}/map")
-    public StoreVO getBrandByStoreNo(@PathVariable int storeNo) {
-        return storeDAO.getBrandByStoreNo(storeNo);
-    }
+//    // 지도) 좌표로 지도 위치 설정
+//    @GetMapping("/{storeNo}/mapgps")
+//    public StoreVO getBrandByStoreNo(@PathVariable int storeNo) {
+//        return storeDAO.getBrandByStoreNo(storeNo);
+//    }
 
-    // 지도테스트) 매장 주소 집어넣어서 해당 위치 지도 표시
-    @GetMapping("/{storeNo}/maptest")
+    // 지도) 매장 주소로 지도 위치 설정
+    @GetMapping("/{storeNo}/map")
     public StoreVO getAddrAndBrandByStoreNo(@PathVariable int storeNo) {
         return storeDAO.getAddrAndBrandByStoreNo(storeNo);
     }

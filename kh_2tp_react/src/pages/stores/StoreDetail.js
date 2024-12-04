@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import StoreDetailMapGPS from "./StoreDetailMapGPS(BackUp)";
 import StoreDetailMap from "./StoreDetailMap";
-import StoreDetailMapTest from "./StoreDetailMapTest";
 
 const StoreDetail = () => {
-
   const { storeNo } = useParams();
   const [store, setStore] = useState(null);
   const [reservedTimes, setReservedTimes] = useState([]); // 예약된 시간 목록
   const [selectedTime, setSelectedTime] = useState(null); // 선택 시간
   const [reservationStatus, setReservationStatus] = useState(""); // 예약 상태 메시지
   const [selectedPersonCnt, setSelectedPersonCnt] = useState(null); // 선택된 인원 수 상태
-
 
   // 특정 매장 조회
   useEffect(() => {
@@ -189,8 +187,8 @@ const StoreDetail = () => {
       {reservationStatus && <p>{reservationStatus}</p>}
       <button onClick={handleReservation}>예약하기</button>
       <>
-        {/* <StoreDetailMap /> */}
-        <StoreDetailMapTest />
+        {/* <StoreDetailMapGPS /> */}
+        <StoreDetailMap />
       </>
     </>
   );

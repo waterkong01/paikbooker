@@ -2,11 +2,12 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+
+// 좌표로 동작하는 지도함수
 const { kakao } = window;
 
-const StoreDetailMapTest = () => {
-
-  const { storeNo } = useParams();
+const StoreDetailMapGPS = () => {
+  const { storeNo, storeMap } = useParams();
   const [store, setStore] = useState(null); // 지점 정보
 
   const getMarkerImage = (brandName) => {
@@ -58,74 +59,56 @@ const StoreDetailMapTest = () => {
 
   // 매장 정보를 받아오는 API 호출
   useEffect(() => {
-  const fetchStore = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8111/stores/${storeNo}/maptest`
+    axios
+      .get(`http://localhost:8111/stores/${storeNo}/mapgps`)
+      .then((response) => setStore(response.data))
+      .catch((error) =>
+        console.error("store map 가져오기에서 오류 발생 : ", error)
       );
-      setStore(response.data);
-    } catch (error) {
-      console.error("store map 가져오기에서 오류 발생:", error);
-    }
-  };
-    fetchStore();
-  }, [storeNo]);
-  
-  useEffect(() => {
-    if (!store) return;
 
-     //지도를 담을 영역의 DOM 레퍼런스
-    const mapContainer = document.getElementById("map");
+    const mapContainer = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
     const mapOptions = {
-
       //지도를 생성할 때 필요한 기본 옵션
-      center: new kakao.maps.LatLng(37.49900095617105, 127.03286623287303), // 지도의 중심좌표
-      level: 3, // 지도의 레벨 (확대, 축소 정도)
+      center: new kakao.maps.LatLng(37.49900095617105, 127.03286623287303), //지도의 중심좌표.
+      level: 3, //지도의 레벨(확대, 축소 정도)
     };
 
-    //지도 생성 및 객체 리턴
-    const map = new kakao.maps.Map(mapContainer, mapOptions);
-    const geocoder = new kakao.maps.services.Geocoder();
+    const map = new kakao.maps.Map(mapContainer, mapOptions); //지도 생성 및 객체 리턴
 
-    geocoder.addressSearch(store.address, (result, status) => {
+    const imageSize = new kakao.maps.Size(50, 50); // 마커이미지의 크기입니다
+    const imageOption = { offset: new kakao.maps.Point(27, 48) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-      // 정상적으로 검색이 완료됐으면
-      if (status === kakao.maps.services.Status.OK) {
-        const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    if (store) {
+      const brandImageSrc = getMarkerImage(store.brandName);
 
-        // 결과값으로 받은 위치를 마커로 표시
-        const markerImage = new kakao.maps.MarkerImage(
-          getMarkerImage(store.brandName),
-          new kakao.maps.Size(50, 50),
-          { offset: new kakao.maps.Point(27, 48) }
-        );
+      // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+      const markerImage = new kakao.maps.MarkerImage(
+          brandImageSrc,
+          imageSize,
+          imageOption
+        ),
+        markerPosition = new kakao.maps.LatLng(
+          37.49900095617105,
+          127.03286623287303
+        ); // 마커가 표시될 위치입니다
 
-        const marker = new kakao.maps.Marker({
-          position: coords,
-          image: markerImage,
-          map: map,
-        });
+      // 마커를 생성합니다
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage, // 마커이미지 설정
+      });
 
-        const infowindow = new kakao.maps.InfoWindow({
-          content: `<div style="width:150px;text-align:center;padding:6px 0;">${store.storeName}</div>`,
-        });
-        infowindow.open(map, marker);
-
-        map.setCenter(coords);
-      } else {
-        console.error("주소 검색 실패:", status);
-      }
-    });
+      // 지도에 마커를 표시합니다
+      marker.setMap(map);
+    }
   }, [store]);
-  
-  return (
-    <>
-      <div
-        id="map"
-        style={{ width: "500px", height: "400px", marginTop: "20px" }}
-      ></div>
-    </>
-  );
-}
 
-export default StoreDetailMapTest;
+  return (
+    <div
+      id="map"
+      style={{ width: "500px", height: "400px", marginTop: "20px" }}
+    ></div>
+  );
+};
+
+export default StoreDetailMapGPS;
