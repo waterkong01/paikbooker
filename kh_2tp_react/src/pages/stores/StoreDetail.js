@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import StoreDetailMap from "./StoreDetailMap";
 
 const StoreDetail = () => {
 
@@ -183,9 +182,6 @@ const StoreDetail = () => {
       ))}
       {reservationStatus && <p>{reservationStatus}</p>}
       <button onClick={handleReservation}>예약하기</button>
-      <>
-      <StoreDetailMap />
-      </>
     </>
   );
 };
