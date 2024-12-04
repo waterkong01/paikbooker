@@ -25,6 +25,8 @@ public class StoreDAO {
             (R_TIME, R_PERSON_CNT, USER_ID, USER_NAME, STORE_NO, STORE_NAME, STORE_PHONE, BRAND_NAME)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
+    private static final String SELECT_BRAND_BY_STORE_NO = "SELECT BRAND_NAME FROM STORE_TB WHERE STORE_NO = ?";
+    private static final String SELECT_ADDR_AND_BRAND_BY_STORE_NO = "SELECT STORE_ADDR, BRAND_NAME FROM STORE_TB WHERE STORE_NO = ?";
 
     // 예약) 전체 매장 조회
     public List<StoreVO> getAllStores() {
@@ -73,6 +75,16 @@ public class StoreDAO {
             cal.add(Calendar.HOUR_OF_DAY, 1);
         }
         return times;
+    }
+
+    // 지도) 브랜드별 마커 설정
+    public StoreVO getBrandByStoreNo(int storeNo) {
+        return jdbcTemplate.queryForObject(SELECT_BRAND_BY_STORE_NO, new Object[]{storeNo}, new BeanPropertyRowMapper<>(StoreVO.class));
+    }
+
+    // 지도테스트) 매장 주소 집어넣어서 해당 위치 지도 표시
+    public StoreVO getAddrAndBrandByStoreNo(int storeNo) {
+        return jdbcTemplate.queryForObject(SELECT_ADDR_AND_BRAND_BY_STORE_NO, new Object[]{storeNo}, new BeanPropertyRowMapper<>(StoreVO.class));
     }
 
 }

@@ -6,6 +6,7 @@ import com.kh.paikbooker.vo.StoreVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +61,16 @@ public class StoreController {
         }
     }
 
+    // 지도) 브랜드별 마커 설정
+    @GetMapping("/{storeNo}/map")
+    public StoreVO getBrandByStoreNo(@PathVariable int storeNo) {
+        return storeDAO.getBrandByStoreNo(storeNo);
+    }
+
+    // 지도테스트) 매장 주소 집어넣어서 해당 위치 지도 표시
+    @GetMapping("/{storeNo}/maptest")
+    public StoreVO getAddrAndBrandByStoreNo(@PathVariable int storeNo) {
+        return storeDAO.getAddrAndBrandByStoreNo(storeNo);
+    }
 
 }

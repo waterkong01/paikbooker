@@ -1,6 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import StoreDetailMap from "./StoreDetailMap";
+import StoreDetailMapTest from "./StoreDetailMapTest";
 
 const StoreDetail = () => {
 
@@ -24,7 +26,7 @@ const StoreDetail = () => {
 
   // 예약 불가능 시간 조회
   useEffect(() => {
-    const selectedDate = new Date().toISOString().split("T")[0]; // 오늘 날짜
+    const selectedDate = "2024-01-01"; // 고정된 날짜
     axios
       .get(`http://localhost:8111/stores/${storeNo}/reserved-times`, {
         params: { date: selectedDate },
@@ -38,15 +40,19 @@ const StoreDetail = () => {
   // 'store'가 null일 때 "Loading..." 출력
   if (!store) return <>Loading...</>;
 
-  // storeOpen과 storeClose를 시간 단위로 변환하여 배열로 반환
+  // brandOpen과 brandClose를 시간 단위로 변환하여 배열로 반환
   const getAvailableTimes = () => {
     if (!store) return [];
 
-    const start = new Date(store.storeOpen);
-    const end = new Date(store.storeClose);
-    const times = [];
+    // 자정 넘어서까지 영업하는 매장 처리
+    const brandOpenDate = new Date(store.brandOpen);
+    const brandCloseDate = new Date(store.brandClose);
 
-    while (start <= end) {
+    const times = [];
+    let start = brandOpenDate;
+
+    // brandClose가 brandOpen 다음날이면, 시간을 24시간 순으로 추가
+    while (start <= brandCloseDate) {
       const hours = String(start.getHours()).padStart(2, "0");
       const minutes = String(start.getMinutes()).padStart(2, "0");
       times.push(`${hours}:${minutes}`);
@@ -124,8 +130,8 @@ const StoreDetail = () => {
       <h1>{store.storeName}</h1>
       <p>브랜드명 : {store.brandName}</p>
       <p>
-        영업 시간 : {new Date(store.storeOpen).toLocaleTimeString()} ~{" "}
-        {new Date(store.storeClose).toLocaleTimeString()}
+        영업 시간 : {new Date(store.brandOpen).toLocaleTimeString()} ~{" "}
+        {new Date(store.brandClose).toLocaleTimeString()}
       </p>
       <p>주소 : {store.storeAddr}</p>
       <p>연락처 : {store.storePhone}</p>
@@ -182,6 +188,10 @@ const StoreDetail = () => {
       ))}
       {reservationStatus && <p>{reservationStatus}</p>}
       <button onClick={handleReservation}>예약하기</button>
+      <>
+        {/* <StoreDetailMap /> */}
+        <StoreDetailMapTest />
+      </>
     </>
   );
 };
