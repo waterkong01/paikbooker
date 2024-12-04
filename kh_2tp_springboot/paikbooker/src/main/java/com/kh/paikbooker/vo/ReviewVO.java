@@ -14,11 +14,11 @@ import java.util.Date;
 public class ReviewVO {
 
     private int rvNo;
-    private String userId;
     private Date rvDate;
-    private String storeName;
-    private Date rTime;
     private int rNo;
+    private Date rTime;
+    private String userId;
+    private String storeName;
     private BigDecimal rvPrice;
     private BigDecimal rvTaste;
     private BigDecimal rvVibe;

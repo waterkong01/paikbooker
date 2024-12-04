@@ -10,15 +10,12 @@ import java.util.Date;
 @NoArgsConstructor // 매개변수가 없는 생성자 (기본 생성자)
 @ToString
 
-public class ReservationVO {
+public class BrandVO {
 
-    private int rNo;
-    private Date rTime;
-    private int rPersonCnt;
-    private String userId;
-    private String userName;
-    private String storeName;
-    private String storePhone;
+    private int brandNo;
     private String brandName;
+    private Date brandOpen;
+    private Date brandClose;
+    private String brandFood;
 
 }

@@ -13,12 +13,12 @@ import java.util.Date;
 public class StoreVO {
 
     private int storeNo;
-    private String brandName;
     private String storeName;
-    private Date storeOpen;
-    private Date storeClose;
+    private String storePhone;
     private String storeAddr;
     private String storeMap;
-    private String storePhone;
+    private String brandName;
+    private Date brandOpen;
+    private Date brandClose;
 
 }

@@ -13,9 +13,9 @@ import java.util.Date;
 public class UserVO {
 
     private int userNo;
-    private String userName;
     private String userId;
     private String userPw;
+    private String userName;
     private String userMail;
     private Date userBirth;
     private String userPhone;
