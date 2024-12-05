@@ -116,6 +116,7 @@ const StoreDetailMap = () => {
   
   return (
     <>
+    <h2>지도</h2>
       <div
         id="map"
         style={{ width: "500px", height: "400px", marginTop: "20px" }}

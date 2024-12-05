@@ -13,10 +13,11 @@ import java.util.Date;
 public class ReservationVO {
 
     private int rNo;
-    private Date rTime;
+    private String rTime;
     private int rPersonCnt;
     private String userId;
     private String userName;
+    private int storeNo;
     private String storeName;
     private String storePhone;
     private String brandName;

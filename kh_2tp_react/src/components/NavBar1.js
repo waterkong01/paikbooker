@@ -10,6 +10,7 @@ const Background = styled.div`
   flex-direction: row;
   justify-content: space-between; /* 양쪽 끝으로 배치 */
   align-items: center; /* 세로 가운데 정렬 */
+  position: fixed;
   z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
   background-color: #fff; /* 배경 색 */
 `;
@@ -37,22 +38,21 @@ const Right = styled.div`
 `;
 
 const NavBar1 = () => {
-
   return (
     <>
       <Background>
-          <Left>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F00백부커02B.png?alt=media&token=9bccec14-c221-42c0-8342-16f463bcb1f0"
-              alt="Logo"
-            />
-          </Left>
-          <Right>
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2FProfile.png?alt=media&token=6f3e2ec4-737f-4646-9d52-254c21319266"
-              alt="Profile"
-            />
-          </Right>
+        <Left>
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F00백부커02B.png?alt=media&token=9bccec14-c221-42c0-8342-16f463bcb1f0"
+            alt="Logo"
+          />
+        </Left>
+        <Right>
+          <img
+            src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2FProfile.png?alt=media&token=6f3e2ec4-737f-4646-9d52-254c21319266"
+            alt="Profile"
+          />
+        </Right>
       </Background>
     </>
   );

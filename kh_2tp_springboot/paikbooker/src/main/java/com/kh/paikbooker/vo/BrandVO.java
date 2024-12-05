@@ -14,8 +14,8 @@ public class BrandVO {
 
     private int brandNo;
     private String brandName;
-    private Date brandOpen;
-    private Date brandClose;
+    private String brandOpen;
+    private String brandClose;
     private String brandFood;
 
 }

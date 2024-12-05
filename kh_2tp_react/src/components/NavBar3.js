@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-pascal-case */
 import styled from "styled-components";
-import StoreSearch from "../pages/search/StoreSearch";
+import { useRef } from "react";
 
 const Background = styled.div`
   width: 100%;
@@ -24,9 +24,30 @@ const BrandContainer = styled.div`
   align-items: center;
   justify-content: left;
   object-fit: cover;
-  gap: 20px; /* 이미지 간의 간격 */
+  gap: 12.5px; /* 이미지 간의 간격 */
   overflow: hidden;
   position: relative;
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    padding: 10px;
+  }
+
+  .left-arrow {
+    left: 0;
+  }
+
+  .right-arrow {
+    right: 0;
+  }
+
 `;
 
 const EachBrand = styled.div`
@@ -60,7 +81,30 @@ const EachText = styled.div`
 `;
 
 const NavBar3 = () => {
-  
+  // BrandContainer에 접근할 ref 생성
+  const containerRef = useRef(null);
+
+  // 스크롤 이동 거리
+  const scrollAmount = 100;
+
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: -scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const brands = [
     {
       src: "https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F01빽보이피자01.png?alt=media&token=73658b91-8b0f-4c8f-82e7-3acc11ef09ec",
@@ -146,6 +190,9 @@ const NavBar3 = () => {
 
   const ShowBrands = () => (
     <BrandContainer>
+      <button className="arrow left-arrow" onClick={scrollLeft}>
+        ←
+      </button>
       {brands.map((brand, index) => (
         <EachBrand key={index}>
           <EachImage>
@@ -154,6 +201,9 @@ const NavBar3 = () => {
           <EachText>{brand.name}</EachText>
         </EachBrand>
       ))}
+      <button className="arrow right-arrow" onClick={scrollRight}>
+        →
+      </button>
     </BrandContainer>
   );
 

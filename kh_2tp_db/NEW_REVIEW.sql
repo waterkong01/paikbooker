@@ -3,7 +3,7 @@ CREATE TABLE REVIEW_TB (
 	RV_NO INTEGER NOT NULL PRIMARY KEY,	/* 리뷰번호 */
 	RV_DATE DATE DEFAULT SYSDATE,		/* 작성일자 */
 	R_NO INTEGER NOT NULL,				/* 예약번호 */
-	R_TIME DATE NOT NULL,	            /* 예약시간 (날짜와 시간 포함) */
+	R_TIME VARCHAR2(20) NOT NULL,	            /* 예약시간 (날짜와 시간 포함) */
 	USER_ID VARCHAR2(20) NOT NULL,		/* 작성자ID */
 	STORE_NAME VARCHAR2(100),			/* 방문매장명 */
 	RV_PRICE DECIMAL(3, 1) NOT NULL,	/* 별점(가격) */
@@ -61,7 +61,7 @@ FROM RESERVATION_TB R WHERE R.R_NO = 5;
 -- REVIEW 테스트용 쿼리문
 SELECT * FROM REVIEW_TB;					/* 전체 데이터 조회 */
 
-DELETE FROM REVIEW_TB WHERE RV_NO = ''; 	/* 리뷰번호 단위로 데이터 삭제 */
+DELETE FROM REVIEW_TB WHERE RV_NO = '5'; 	/* 리뷰번호 단위로 데이터 삭제 */
 
 DROP SEQUENCE RV_NO_SEQ;					/* 리뷰 시퀀스 삭제 */
 

@@ -1,19 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const StoreSearch = ({
-  region,
-  brandName,
-  reservationTime,
-  onSelect,
-  onSearch,
-}) => {
-  // const [stores, setStores] = useState([]); // 검색된 매장들
+const StoreSearch = ({ getDataFromServerAndUpdateStoreList }) => {
   const [categories, setCategories] = useState({
     region: [],
     brandName: [],
     reservationTime: [],
   });
+
+  const [regionValue, setRegionValue] = useState("");
+  const [brandNameValue, setBrandNameValue] = useState("");
+  const [reservationTimeValue, setReservationTimeValue] = useState("");
 
   // 컴포넌트가 처음 레더링될 때 카테고리 목록을 가져옵니다.
   useEffect(() => {
@@ -21,7 +18,7 @@ const StoreSearch = ({
       // 예외 발생시 그에 대한 대응 요구를 위해
       try {
         const rsp = await axios.get(
-          "http://localhost:8111/api/stores/categories" // region: [],brandName: [], reservationTime: [] 데이터 받음
+          "http://localhost:8111/stores/categories" // region: [],brandName: [], reservationTime: [] 데이터 받음
         );
         console.log("카테고리목록 응답:", rsp.data);
         setCategories(rsp.data);
@@ -33,9 +30,13 @@ const StoreSearch = ({
     fetchCategories();
   }, []);
 
-  const handleSearch = () => {
-    // 검색 버튼 클릭 시 onSearch 호출
-    onSearch(region, brandName, reservationTime);
+  const handleSearchButtonClick = () => {
+    // 검색 버튼 클릭 시 onSearchButtonClick의 하위 동작 중 하나
+    getDataFromServerAndUpdateStoreList(
+      regionValue,
+      brandNameValue,
+      reservationTimeValue
+    );
   };
 
   // // async는 비동기 함수를 정의할 때 사용하는 JavaScript 키워드입니다. async와 await는 비동기 작업을 동기처럼 작성할 수 있도록 도와줍니다.
@@ -62,8 +63,10 @@ const StoreSearch = ({
       {/* 카테고리 선택 UI */}
       <div>
         <select
-          value={region}
-          onChange={(e) => onSelect("region", e.target.value)}
+          value={regionValue}
+          onChange={(e) => {
+            setRegionValue(e.target.value);
+          }}
         >
           <option value="">지역 선택</option>
           {categories.region.map((item, index) => (
@@ -74,8 +77,10 @@ const StoreSearch = ({
         </select>
 
         <select
-          value={brandName}
-          onChange={(e) => onSelect("brandName", e.target.value)}
+          value={brandNameValue}
+          onChange={(e) => {
+            setBrandNameValue(e.target.value);
+          }}
         >
           <option value="">브랜드 선택</option>
           {categories.brandName.map((item, index) => (
@@ -86,8 +91,10 @@ const StoreSearch = ({
         </select>
 
         <select
-          value={reservationTime}
-          onChange={(e) => onSelect("reservationTime", e.target.value)}
+          value={reservationTimeValue}
+          onChange={(e) => {
+            setReservationTimeValue(e.target.value);
+          }}
         >
           <option value="">예약 시간 선택</option>
           {categories.reservationTime.map((item, index) => (
@@ -96,26 +103,8 @@ const StoreSearch = ({
             </option>
           ))}
         </select>
-        <button onClick={handleSearch}>검색</button>
-        {/* 
-        <button onClick={handleSearch}>검색</button> */}
+        <button onClick={handleSearchButtonClick}>검색</button>
       </div>
-      {/* 검색 결과 표시 */}
-      {/* <div>
-        {stores.length > 0 ? (
-          stores.map((store) => (
-            <div key={store.storeNo}>
-              <h3>{store.brandName}</h3>
-              <p>{store.storeAddr}</p>
-              <p>{store.storeHour}</p>
-              <p>{store.storePhone}</p>
-              <img src={store.storeMap} alt="" />
-            </div>
-          ))
-        ) : (
-          <p>검색 결과가 없습니다.</p>
-        )}
-      </div> */}
     </div>
   );
 };

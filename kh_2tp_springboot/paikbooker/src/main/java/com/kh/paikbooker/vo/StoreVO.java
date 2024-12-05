@@ -18,7 +18,7 @@ public class StoreVO {
     private String storeAddr;
     private String storeMap;
     private String brandName;
-    private Date brandOpen;
-    private Date brandClose;
+    private String brandOpen;
+    private String brandClose;
 
 }

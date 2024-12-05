@@ -1,58 +1,51 @@
 import HomeItem from "../components/HomeItems";
 import GlobalStyle from "../styles/GlobalStyle";
-import { useCallback, useState } from "react";
-import StoreSearch from "./search/StoreSearch";
+import { useCallback, useState, useEffect } from "react";
 import axios from "axios";
 
 const Main = () => {
-  const [region, setRegion] = useState("all"); // setRegion을 호출해서 region 상태 변경
-  const [brandName, setBrandName] = useState("all");
-  const [reservationTime, setReservationTime] = useState("all");
+  const [region, setRegion] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [reservationTime, setReservationTime] = useState("");
   const [stores, setStores] = useState([]); // 검색된 매장들
-  const onSelect = useCallback((category, value) => {
-    if (category === "region") {
-      setRegion(value);
-    } else if (category === "brandName") {
-      setBrandName(value);
-    } else if (category === "revationTime") {
-      setReservationTime(value);
-    }
-  }, []);
-  const onSearch = useCallback(async (region, brandName, reservationTime) => {
-    try {
-      console.log("검색 조건:", { region, brandName, reservationTime }); // 파라미터 확인
-      // API 호출을 통해 조건에 맞는 데이터를 가져옵니다.
-      const response = await axios.get(
-        "http://localhost:8111/api/stores/search",
-        {
-          params: {
-            region: region || "",
-            brandName: brandName || "",
-            reservationTime: reservationTime || "",
-          },
-        }
-      );
-      console.log(response.config.url);
-      setStores(response.data); // 검색된 매장들 상태 업데이트
-    } catch (error) {
-      console.error("검색 실패:", error);
-    }
-  }, []);
+
+  // 컴포넌트가 처음 로드될 때, 기본적으로 모든 매장을 가져오는 검색
+  useEffect(() => {
+    getDataFromServerAndUpdateStoreList(region, brandName, reservationTime);
+  }, []); // 빈 배열을 의존성으로 설정하면 컴포넌트가 처음 렌더링될 때만 호출됨
+
+  const getDataFromServerAndUpdateStoreList = useCallback(
+    async (region, brandName, reservationTime) => {
+      try {
+        console.log("검색 조건:", { region, brandName, reservationTime }); // 파라미터 확인
+        // API 호출을 통해 조건에 맞는 데이터를 가져옵니다.
+        const response = await axios.get(
+          "http://localhost:8111/api/stores/search",
+          {
+            params: {
+              region: region,
+              brandName: brandName,
+              reservationTime: reservationTime,
+            },
+          }
+        );
+        console.log(response.config.url);
+        setStores(response.data); // 검색된 매장들 상태 업데이트
+      } catch (error) {
+        console.error("검색 실패:", error);
+      }
+    },
+    []
+  );
 
   return (
     <>
+      <div style={{ height: "260px" }}></div>
       <GlobalStyle />
-      {/* 하나의 onSelect 전달 */}
-      <StoreSearch
-        category={{ region, brandName, reservationTime }}
-        onSelect={onSelect}
-        onSearch={onSearch}
-      />
+
       {/* 디버깅용 상태 출력 */}
       {console.log("현재 stores 상태:", stores)}
       <HomeItem storeData={stores} />
-
-      {/* <StoreList /> */}
     </>
   );
 };

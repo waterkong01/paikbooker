@@ -16,7 +16,7 @@ public class ReviewVO {
     private int rvNo;
     private Date rvDate;
     private int rNo;
-    private Date rTime;
+    private String rTime;
     private String userId;
     private String storeName;
     private BigDecimal rvPrice;

@@ -11,6 +11,7 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
   z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
   background-color: #fff; /* 배경 색 */
 `;
@@ -26,16 +27,17 @@ const SearchBox = styled.div`
   align-items: center;
 `;
 
-
-const NavBar2 = () => {
-
+const NavBar2 = ({ getDataFromServerAndUpdateStoreList }) => {
   return (
     <>
       <Background>
-
-          <SearchBox>
-            <StoreSearch />
-          </SearchBox>
+        <SearchBox>
+          <StoreSearch
+            getDataFromServerAndUpdateStoreList={
+              getDataFromServerAndUpdateStoreList
+            }
+          />
+        </SearchBox>
       </Background>
     </>
   );
