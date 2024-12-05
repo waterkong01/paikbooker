@@ -1,21 +1,25 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import StoreList from "./pages/stores/StoreList";
 import StoreDetail from "./pages/stores/StoreDetail";
+import Layout from "./styles/Layout";
 import Main from "./pages/Main";
+import GlobalStyle from "./styles/GlobalStyle";
 
 function App() {
   return (
     <>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
+      <GlobalStyle />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Main />} />
             <Route path="/stores" element={<StoreList />} />
             <Route path="/stores/:storeNo" element={<StoreDetail />} />
-          </Routes>
-        </Router>
-        <Main />
+          </Route>
+        </Routes>
+      </Router>
+      {/* <Main /> */}
     </>
   );
 }

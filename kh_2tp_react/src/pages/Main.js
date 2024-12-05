@@ -1,4 +1,3 @@
-import FixHeader from "../styles/FixHeader";
 import HomeItem from "../components/HomeItems";
 import GlobalStyle from "../styles/GlobalStyle";
 import { useCallback, useState } from "react";
@@ -42,8 +41,6 @@ const Main = () => {
 
   return (
     <>
-      <FixHeader />
-      <div style={{ height: "260px" }}></div>
       <GlobalStyle />
       {/* 하나의 onSelect 전달 */}
       <StoreSearch
