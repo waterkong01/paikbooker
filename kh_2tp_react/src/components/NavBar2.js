@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-pascal-case */
 import styled from "styled-components";
 import StoreSearch from "../pages/search/StoreSearch";
 
@@ -32,11 +31,7 @@ const NavBar2 = ({ getDataFromServerAndUpdateStoreList }) => {
     <>
       <Background>
         <SearchBox>
-          <StoreSearch
-            getDataFromServerAndUpdateStoreList={
-              getDataFromServerAndUpdateStoreList
-            }
-          />
+          <StoreSearch />
         </SearchBox>
       </Background>
     </>
