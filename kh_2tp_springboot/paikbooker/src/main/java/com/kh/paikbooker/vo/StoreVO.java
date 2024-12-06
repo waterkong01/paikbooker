@@ -20,5 +20,8 @@ public class StoreVO {
     private String brandName;
     private String brandOpen;
     private String brandClose;
+    private String brandLogo1;
+    private String brandLogo2;
+    private String brandMarker;
 
 }

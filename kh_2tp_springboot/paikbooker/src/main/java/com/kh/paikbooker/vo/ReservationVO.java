@@ -15,6 +15,7 @@ public class ReservationVO {
     private int rNo;
     private String rTime;
     private int rPersonCnt;
+    private Date rSubmitTime;
     private String userId;
     private String userName;
     private int storeNo;
