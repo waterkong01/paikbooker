@@ -15,7 +15,7 @@ public class StoreDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // 예약) 쿼리문
+    // 예약) query
     private static final String SELECT_ALL_STORES = "SELECT * FROM STORE_TB ORDER BY STORE_NAME ASC";
     private static final String SELECT_STORE_BY_STORE_NO = "SELECT * FROM STORE_TB WHERE STORE_NO = ?";
     private static final String SELECT_RESERVED_TIMES = "SELECT R_TIME FROM RESERVATION_TB WHERE STORE_NO = ?";
