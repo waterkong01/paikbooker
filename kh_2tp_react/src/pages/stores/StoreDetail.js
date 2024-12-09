@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import StoreDetailReservation from "./StoreDetailReservation";
 import StoreDetailMap from "./StoreDetailMap";
 import StoreDetailMenu from "./StoreDetailMenu";
+import AxiosApi from "../../api/AxiosApi";
 
 const StoreDetail = () => {
   const { storeNo } = useParams();
@@ -13,19 +13,14 @@ const StoreDetail = () => {
   useEffect(() => {
     const getEachStore = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores/${storeNo}`
-        );
-        setStore(response.data);
+        const response = await AxiosApi.getEachStore(storeNo);
+        setStore(response);
       } catch (error) {
-        console.error("특정 매장 조회 오류 발생 : ", error);
+        console.error("특정 매장 조회 오류 : ", error);
       }
     };
     getEachStore();
   }, [storeNo]);
-
-  // 'store'가 null일 때 "Loading..." 출력
-  if (!store) return <>Store Loading...</>;
 
   return (
     <>

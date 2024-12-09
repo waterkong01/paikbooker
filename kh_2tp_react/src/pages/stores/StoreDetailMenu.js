@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import AxiosApi from "../../api/AxiosApi";
 
 const StoreDetailMenu = () => {
   const { storeNo } = useParams();
@@ -10,19 +10,14 @@ const StoreDetailMenu = () => {
   useEffect(() => {
     const getMenus = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores/${storeNo}/menus`
-        );
-        setMenu(response.data);
+        const response = await AxiosApi.getMenus(storeNo);
+        setMenu(response);
       } catch (error) {
         console.error("메뉴 조회 오류 발생 : ", error);
       }
     };
     getMenus();
   }, []);
-
-  // 'menu'가 null일 때 "Loading..." 출력
-  if (!menu) return <>Loading...</>;
 
   return (
     <>

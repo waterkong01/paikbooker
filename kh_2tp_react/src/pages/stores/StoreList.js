@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import AxiosApi from "../../api/AxiosApi";
 
 const StoreList = () => {
   const [stores, setStores] = useState([]);
 
+  // 전체 매장 조회
   useEffect(() => {
-
-    // 전체 매장 조회
     const getStoreList = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores`
-        );
-        setStores(response.data)
+        const response = await AxiosApi.getStoreList();
+        setStores(response);
       } catch (error) {
-        console.error("전체 매장 조회 오류 발생 : ", error);
+        console.error("전체 매장 조회 오류 : ", error);
       }
     };
     getStoreList();
@@ -27,9 +24,7 @@ const StoreList = () => {
       <ul>
         {stores.map((store) => (
           <li key={store.storeNo}>
-            <Link to={`/stores/${store.storeNo}`}>
-              {store.storeName}
-            </Link>
+            <Link to={`/stores/${store.storeNo}`}>{store.storeName}</Link>
           </li>
         ))}
       </ul>

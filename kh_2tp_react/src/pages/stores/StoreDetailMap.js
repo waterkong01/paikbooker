@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import AxiosApi from "../../api/AxiosApi";
 
 const { kakao } = window;
 
@@ -13,12 +13,10 @@ const StoreDetailMap = () => {
   useEffect(() => {
     const getStoreAddrNameMarker = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores/${storeNo}/map`
-        );
-        setStore(response.data);
+        const response = await AxiosApi.getStoreAddrNameMarker(storeNo);
+        setStore(response);
       } catch (error) {
-        console.error("store map 가져오기에서 오류 발생:", error);
+        console.error("지도 가져오기 오류:", error);
       }
     };
     getStoreAddrNameMarker();

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import styled from "styled-components";
+import AxiosApi from "../../api/AxiosApi";
 
 // 시간 버튼 컨테이너
 export const TimeButtonContainer = styled.div`
@@ -75,12 +75,10 @@ const StoreDetailReservation = () => {
   useEffect(() => {
     const getStoreName = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores/${storeNo}`
-        );
-        setStoreName(response.data);
+        const response = await AxiosApi.getEachStore(storeNo);
+        setStoreName(response.storeName);
       } catch (error) {
-        console.error("매장명 조회 오류 발생 : ", error);
+        console.error("매장 이름 조회 오류 : ", error);
       }
     };
     getStoreName();
@@ -90,13 +88,11 @@ const StoreDetailReservation = () => {
   useEffect(() => {
     const getTimes = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8111/stores/${storeNo}/times`
-        );
+        const response = await AxiosApi.times(storeNo);
         // 백엔드 API에서 Map 반환 > JSON형식으로 직렬화되어 프론트에 전달
         // 이미 JSON 형식으로 처리되므로 일반 객체로 접근 가능
-        setAvailableTimes(response.data.availableTimes);
-        setReservedTimes(response.data.reservedTimes);
+        setAvailableTimes(response.availableTimes);
+        setReservedTimes(response.reservedTimes);
       } catch (error) {
         console.error("예약 가능/불가능 시간 가져오기 증 오류 발생 : ", error);
       }
@@ -124,29 +120,31 @@ const StoreDetailReservation = () => {
     setSelectedPerson(person);
   };
 
+  // 예약 후 해당 시간을 ReservedTimes에 추가
+  const disableTime = (time) => {
+    setReservedTimes((prevReservedTimes) => [...prevReservedTimes, time]); // 예약된 시간 추가
+  };
+
   const handleSubmit = async () => {
     if (!selectedTime || !selectedPerson) {
       alert("시간과 인원을 모두 선택해주세요.");
       return;
     }
+    const reservationData = {
+      rTime: selectedTime,
+      rPersonCnt: selectedPerson,
+      storeNo: Number(storeNo),
+      storeName: storeName,
+    };
     try {
-      const reservationData = {
-        rTime: selectedTime,
-        rPersonCnt: selectedPerson,
-        storeNo: Number(storeNo),
-        storeName: storeName.storeName,
-      };
-      await axios.post(
-        `http://localhost:8111/stores/${storeNo}/reservations`,
-        reservationData
-      );
+      await AxiosApi.createReservation(reservationData);
       alert(
-        `${storeName.storeName} ${reservationData.rTime}:00 ${reservationData.rPersonCnt}명\n
-        예약이 성공적으로 완료되었습니다!`
+        `${storeName} ${reservationData.rTime}:00 ${reservationData.rPersonCnt}명\n예약이 성공적으로 완료되었습니다!`
       );
-      console.log("Sending Data: ", reservationData);
+
       setSelectedTime(null);
       setSelectedPerson(null);
+      disableTime(selectedTime);
     } catch (error) {
       console.log(storeName.storeName);
       console.error("예약 요청 오류: ", error);
@@ -160,17 +158,17 @@ const StoreDetailReservation = () => {
       <p>{`reservedTimes : ${reservedTimes.sort((a, b) => a - b)}`}</p>
       <p>{`availableTimes : ${availableTimes.sort((a, b) => a - b)}`}</p>
       <TimeButtonContainer>
-        {combinedTimes.map((time) => {
+        {combinedTimes.map((time, index) => {
           const isReserved = filteredReservedTimes.includes(time);
           const isAvailable = filteredAvailableTimes.includes(time);
 
           return isReserved ? (
-            <TimeButton key={time} className="reserved" disabled>
+            <TimeButton key={`${time}-${index}`} className="reserved" disabled>
               {time}:00
             </TimeButton>
           ) : isAvailable ? (
             <TimeButton
-              key={time}
+              key={`${time}-${index}`}
               className={`available ${selectedTime === time ? "selected" : ""}`}
               onClick={() => handleTimeSelect(time)}
             >
