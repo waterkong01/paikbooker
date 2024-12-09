@@ -93,9 +93,9 @@ public class StoreDAO {
                 reservationVO.getRTime(), // R_TIME
                 reservationVO.getRPersonCnt(), // R_PERSON_CNT
                 reservationVO.getUserId(), // USER_ID
-                storeNo, // STORE_NO
+                reservationVO.getStoreNo(), // STORE_NO
                 reservationVO.getUserId(), // USER_ID (WHERE)
-                storeNo); // STORE_NO (WHERE)
+                reservationVO.getStoreNo()); // STORE_NO (WHERE)
     };
 
     // 지도) 매장 주소로 지도 위치 설정

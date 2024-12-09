@@ -98,8 +98,6 @@ const StoreDetailReservation = () => {
         setAvailableTimes(response.data.availableTimes);
         setReservedTimes(response.data.reservedTimes);
       } catch (error) {
-        console.log(availableTimes);
-        console.log(reservedTimes);
         console.error("예약 가능/불가능 시간 가져오기 증 오류 발생 : ", error);
       }
     };
@@ -132,22 +130,25 @@ const StoreDetailReservation = () => {
       return;
     }
     try {
-      await axios.post(`http://localhost:8111/stores/${storeNo}/reservations`, {
+      const reservationData = {
         rTime: selectedTime,
         rPersonCnt: selectedPerson,
-      });
-
+        storeNo: Number(storeNo),
+        storeName: storeName.storeName,
+      };
+      await axios.post(
+        `http://localhost:8111/stores/${storeNo}/reservations`,
+        reservationData
+      );
       alert(
-        `${storeName.storeName} ${selectedTime}:00 ${selectedPerson}명\n
+        `${storeName.storeName} ${reservationData.rTime}:00 ${reservationData.rPersonCnt}명\n
         예약이 성공적으로 완료되었습니다!`
       );
-      console.log("Sending data:", {
-        rTime: selectedTime,
-        rPersonCnt: selectedPerson,
-      });
+      console.log("Sending Data: ", reservationData);
       setSelectedTime(null);
       setSelectedPerson(null);
     } catch (error) {
+      console.log(storeName.storeName);
       console.error("예약 요청 오류: ", error);
       alert("예약에 실패했습니다. 다시 시도해주세요.");
     }

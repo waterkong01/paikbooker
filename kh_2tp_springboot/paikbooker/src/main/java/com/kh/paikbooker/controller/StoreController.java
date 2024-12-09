@@ -78,29 +78,26 @@ public class StoreController {
     // 예약) 새로운 예약 생성
     @PostMapping("/{storeNo}/reservations")
     public ResponseEntity<?> addReservation(
-            @PathVariable int storeNo,
-            @RequestBody Map<String, Object> submitData {
-                ReservationVO reservationVO = new ReservationVO();
-                reservationVO.setRTime((String) submitData.get("rTime"));
-                reservationVO.setRPersonCnt((Integer) submitData.get("rPersonCnt"));
-                return ResponseEntity.ok("예약 성공");
-
-
-        String rTime = reservationVO.getRTime();
-        int rPersonCnt = reservationVO.getRPersonCnt();
-        String userId = "testid01";
-
+            @RequestBody Map<String, Object> submitData) {
+            ReservationVO reservationVO = new ReservationVO();
         try {
-            // 예약 생성
-            storeDAO.addReservation(reservationVO, storeNo);
+            reservationVO.setRTime((String) submitData.get("rTime"));
+            reservationVO.setRPersonCnt((Integer) submitData.get("rPersonCnt"));
+            String userId = "testid01"; // 임시
+            reservationVO.setUserId(userId);
+            reservationVO.setStoreNo((Integer) submitData.get("storeNo"));
+
+            // DAO addReservation 메소드 호출
+            storeDAO.addReservation(reservationVO, reservationVO.getStoreNo());
+
             System.out.println("try 예약 정보: " + reservationVO.toString());
             return ResponseEntity.ok("예약 성공");
         } catch (Exception e) {
-            System.out.println(rTime);
-            System.out.println(rPersonCnt);
+            e.printStackTrace(); // 예외 로그 출력
             System.out.println("catch 예약 정보: " + reservationVO.toString());
             return ResponseEntity.badRequest().body("예약 실패 : " + e.getMessage());
         }
+
     }
 
     // 지도) 매장 주소로 지도 위치 설정
