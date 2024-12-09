@@ -4,6 +4,7 @@ import com.kh.paikbooker.dao.StoreDAO;
 //import com.kh.paikbooker.service.StoreService;
 import com.kh.paikbooker.vo.MenuVO;
 import com.kh.paikbooker.vo.ReservationVO;
+import com.kh.paikbooker.vo.ReviewVO;
 import com.kh.paikbooker.vo.StoreVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +105,12 @@ public class StoreController {
     @GetMapping("/{storeNo}/map")
     public StoreVO getAddrAndBrandByStoreNo(@PathVariable int storeNo) {
         return storeDAO.getAddrAndBrandByStoreNo(storeNo);
+    }
+
+    // 별점) STORE_NO로 REVIEW_TB에서 각 별점 가져오기
+    @GetMapping("/{storeNo}/rating")
+    public List<ReviewVO> getRatingResults(@PathVariable int storeNo) {
+        return storeDAO.getRatingResults(storeNo);
     }
 
 

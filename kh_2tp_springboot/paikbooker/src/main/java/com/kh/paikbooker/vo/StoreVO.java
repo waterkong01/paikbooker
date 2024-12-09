@@ -23,5 +23,6 @@ public class StoreVO {
     private String brandLogo1;
     private String brandLogo2;
     private String brandMarker;
+    private String brandImg;
 
 }

@@ -21,17 +21,19 @@ const StoreDetailMenu = () => {
 
   return (
     <>
-      <h2>메뉴</h2>
-      <br />
       {menu.map((item, index) => (
         <div key={index}>
-          <p>{item.menu.menuName}</p>
           <img
             src={item.menu.menuImg}
             alt={item.menu.menuName}
-            style={{ width: "300px", height: "300px" }}
+            style={{
+              height: "15vw",
+              objectFit: "contain",
+              borderRadius: "20px",
+            }}
           />
           <br />
+          <p style={{ textAlign: "center" }}>{item.menu.menuName}</p>
           <br />
         </div>
       ))}

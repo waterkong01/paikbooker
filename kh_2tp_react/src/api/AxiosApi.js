@@ -3,6 +3,13 @@ import { useParams } from "react-router-dom";
 const PAIKBOOKER_DOMAIN = "http://localhost:8111";
 
 const AxiosApi = {
+
+  // NavBar) 브랜드 로고 가져오기 (NavBar3)
+  getBrandLogos: async () => {
+    const response = await axios.get(PAIKBOOKER_DOMAIN + `/navbar`)
+    return response.data;
+  },
+
   // 매장) 전체 매장 조회 (StoreList)
   getStoreList: async () => {
     const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores`);
@@ -41,7 +48,11 @@ const AxiosApi = {
     return response.data;
   },
 
-
+  // 별점) 별점 정보 가져오기 (StoreDetailRating)
+  getRatingResults: async (storeNo) => {
+    const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores/${storeNo}/rating`);
+    return response.data;
+  }
 
 
 };

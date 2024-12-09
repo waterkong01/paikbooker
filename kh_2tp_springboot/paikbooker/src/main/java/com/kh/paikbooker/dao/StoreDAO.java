@@ -2,8 +2,10 @@ package com.kh.paikbooker.dao;
 
 import com.kh.paikbooker.vo.MenuVO;
 import com.kh.paikbooker.vo.ReservationVO;
+import com.kh.paikbooker.vo.ReviewVO;
 import com.kh.paikbooker.vo.StoreVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -30,6 +32,7 @@ public class StoreDAO {
     private static final String SELECT_ADDR_AND_BRAND_BY_STORE_NO = "SELECT STORE_ADDR, BRAND_NAME, BRAND_MARKER FROM STORE_TB WHERE STORE_NO = ?";
     private static final String SELECT_STORE_HOURS = "SELECT BRAND_OPEN, BRAND_CLOSE FROM STORE_TB WHERE STORE_NO = ?";
     private static final String SELECT_MENU_IMG = "SELECT M.MENU_IMG, M.MENU_NAME FROM STORE_TB S JOIN MENU_TB M ON S.BRAND_NAME = M.BRAND_NAME WHERE S.STORE_NO = ?";
+    private static final String SELECT_RATING_RESULT = "SELECT RV_PRICE, RV_TASTE, RV_VIBE, RV_KIND FROM REVIEW_TB R JOIN STORE_TB S ON R.STORE_NAME = S.STORE_NAME WHERE S.STORE_NO = ?";
 
     // 조회) 전체 매장 조회
     public List<StoreVO> getAllStores() {
@@ -101,6 +104,15 @@ public class StoreDAO {
     // 지도) 매장 주소로 지도 위치 설정
     public StoreVO getAddrAndBrandByStoreNo(int storeNo) {
         return jdbcTemplate.queryForObject(SELECT_ADDR_AND_BRAND_BY_STORE_NO, new Object[]{storeNo}, new BeanPropertyRowMapper<>(StoreVO.class));
+    }
+
+    // 별점) STORE_NO로 REVIEW_TB에서 각 별점 가져오기
+    public List<ReviewVO> getRatingResults(int storeNo) {
+        try {
+            return jdbcTemplate.query(SELECT_RATING_RESULT, new Object[]{storeNo}, new BeanPropertyRowMapper<>(ReviewVO.class));
+        } catch (EmptyResultDataAccessException e) {
+            return null;  // 리뷰가 없을 경우 null 반환
+        }
     }
 
 

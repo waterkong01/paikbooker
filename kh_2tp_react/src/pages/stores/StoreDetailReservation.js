@@ -3,27 +3,57 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../../api/AxiosApi";
 
-// 시간 버튼 컨테이너
-export const TimeButtonContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap; /* 버튼이 많을 경우 줄 바꿈 처리 */
-  gap: 10px; /* 버튼 간격 */
+const StoreReservationContainer = styled.div`
+  box-sizing: border-box;
+  width: 80vh;
 `;
 
-// 시간 버튼 스타일
-export const TimeButton = styled.button`
+const StoreReservationTimeContainer = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+`;
+
+const StoreReservationMenuTitle = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  margin-top: 2vh;
+  font-size: 1.5em;
+  font-weight: 500;
+  font-family: "Noto Sans KR", sans-serif;
+  position: relative;
+  overflow: ;
+`;
+
+// 시간 버튼 컨테이너
+const TimeButtonContainer = styled.div`
+  display: flex;
+  width: 90%;
+  flex-wrap: wrap; /* 버튼이 많을 경우 줄 바꿈 처리 */
+  row-gap: 5px;
+  column-gap: 10px;
+`;
+
+const TimeButton = styled.button`
+  width: 10vw;
+  height: 4vh;
   margin: 5px;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  font-size: 14px;
+  border-radius: 30px;
+  font-size: 0.8em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   &.available {
     background-color: black;
     color: white;
   }
   &.reserved {
-    background-color: gray;
+    background-color: #d8d8d8;
     color: white;
     cursor: not-allowed;
   }
@@ -33,30 +63,94 @@ export const TimeButton = styled.button`
   }
 `;
 
+const StoreReservationPersonAndConfirmContainer = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
+const StoreReservationSubMenuTitle = styled.div`
+  box-sizing: border-box;
+  width: 50%;
+  height: 40px;
+  margin-top: 2vh;
+  font-size: 1.5em;
+  font-weight: 500;
+  font-family: "Noto Sans KR", sans-serif;
+  position: relative;
+`;
+
+const StoreReservationPersonContainer = styled.div`
+  box-sizing: border-box;
+  width: 45%;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+`;
+
 // 인원 버튼 컨테이너
-export const PersonButtonContainer = styled.div`
+const PersonButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap; /* 버튼이 많을 경우 줄 바꿈 처리 */
-  gap: 10px; /* 버튼 간격 */
+  gap: 5px; /* 버튼 간격 */
 `;
 
 // 인원 버튼 스타일
-export const PersonButton = styled.button`
+const PersonButton = styled.button`
   margin: 5px;
-  padding: 10px 20px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50px;
-  font-size: 14px;
+  font-size: 0.8em;
   cursor: pointer;
-  &.available {
-    background-color: black;
+  background-color: black;
+  color: white;
+  &.selected {
+    background-color: green;
     color: white;
   }
-  &.reserved {
-    background-color: gray;
-    color: white;
-    cursor: not-allowed;
-  }
+`;
+
+const StoreReservationConfirmContainer = styled.div`
+  box-sizing: border-box;
+  width: 45%;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const StoreReservationConfirmList = styled.div`
+  display: flex;
+`;
+
+const StoreReservationConfirmIndex = styled.div`
+  box-sizing: border-box;
+  width: 30%;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+  line-height: 2.6em;
+  position: relative;
+`;
+
+const StoreReservationConfirmContents = styled.div`
+  box-sizing: border-box;
+  width: 70%;
+  margin-top: 2vh;
+  margin-bottom: 5vh;
+  line-height: 2.6em;
+  position: relative;
+`;
+// 예약 버튼 스타일
+const SubmitButton = styled.button`
+  margin: 5px;
+  width: 85%;
+  height: 40px;
+  border: none;
+  border-radius: 50px;
+  font-size: 0.8em;
+  cursor: pointer;
+  background-color: black;
+  color: white;
   &.selected {
     background-color: green;
     color: white;
@@ -146,42 +240,45 @@ const StoreDetailReservation = () => {
       setSelectedPerson(null);
       disableTime(selectedTime);
     } catch (error) {
-      console.log(storeName.storeName);
       console.error("예약 요청 오류: ", error);
       alert("예약에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
   return (
-    <>
-      <h2>예약 시간 선택</h2>
-      <p>{`reservedTimes : ${reservedTimes.sort((a, b) => a - b)}`}</p>
-      <p>{`availableTimes : ${availableTimes.sort((a, b) => a - b)}`}</p>
-      <TimeButtonContainer>
-        {combinedTimes.map((time, index) => {
-          const isReserved = filteredReservedTimes.includes(time);
-          const isAvailable = filteredAvailableTimes.includes(time);
+    <StoreReservationContainer>
+      <StoreReservationTimeContainer>
+        <StoreReservationMenuTitle>예약 시간 선택</StoreReservationMenuTitle>
+        <TimeButtonContainer>
+          {combinedTimes.map((time, index) => {
+            const isReserved = filteredReservedTimes.includes(time);
+            const isAvailable = filteredAvailableTimes.includes(time);
 
-          return isReserved ? (
-            <TimeButton key={`${time}-${index}`} className="reserved" disabled>
-              {time}:00
-            </TimeButton>
-          ) : isAvailable ? (
-            <TimeButton
-              key={`${time}-${index}`}
-              className={`available ${selectedTime === time ? "selected" : ""}`}
-              onClick={() => handleTimeSelect(time)}
-            >
-              {time}:00
-            </TimeButton>
-          ) : null;
-        })}
-      </TimeButtonContainer>
-      <h6>선택된 시간: {selectedTime}:00</h6>
-      <br />
-      {selectedTime && (
-        <>
-          <h3>인원 선택</h3>
+            return isReserved ? (
+              <TimeButton
+                key={`${time}-${index}`}
+                className="reserved"
+                disabled
+              >
+                {time}:00
+              </TimeButton>
+            ) : isAvailable ? (
+              <TimeButton
+                key={`${time}-${index}`}
+                className={`available ${
+                  selectedTime === time ? "selected" : ""
+                }`}
+                onClick={() => handleTimeSelect(time)}
+              >
+                {time}:00
+              </TimeButton>
+            ) : null;
+          })}
+        </TimeButtonContainer>
+      </StoreReservationTimeContainer>
+      <StoreReservationPersonAndConfirmContainer>
+        <StoreReservationPersonContainer>
+          <StoreReservationSubMenuTitle>인원 선택</StoreReservationSubMenuTitle>
           <PersonButtonContainer>
             {Array.from({ length: 15 }, (_, i) => i + 1).map((person) => (
               <PersonButton
@@ -195,18 +292,39 @@ const StoreDetailReservation = () => {
               </PersonButton>
             ))}
           </PersonButtonContainer>
-          <PersonButton
+        </StoreReservationPersonContainer>
+        <StoreReservationConfirmContainer>
+          <StoreReservationSubMenuTitle>
+            예약 내용 확인
+          </StoreReservationSubMenuTitle>
+          <StoreReservationConfirmList>
+            <StoreReservationConfirmIndex>
+              <p>예약지점</p>
+              <hr />
+              <p>예약시간</p>
+              <hr />
+              <p>인원수</p>
+              <hr />
+            </StoreReservationConfirmIndex>
+            <StoreReservationConfirmContents>
+              <p>{storeName}</p>
+              <hr />
+              <p>{selectedTime}:00</p>
+              <hr />
+              <p>{selectedPerson}명</p>
+              <hr />
+            </StoreReservationConfirmContents>
+          </StoreReservationConfirmList>
+          <SubmitButton
             className="available"
             onClick={handleSubmit}
             disabled={!selectedTime || !selectedPerson}
           >
             예약하기
-          </PersonButton>
-          <h6>선택된 인원: {selectedPerson}명</h6>
-          <br />
-        </>
-      )}
-    </>
+          </SubmitButton>
+        </StoreReservationConfirmContainer>
+      </StoreReservationPersonAndConfirmContainer>
+    </StoreReservationContainer>
   );
 };
 
