@@ -8,12 +8,6 @@ import styled from "styled-components";
 import { PhoneFilled } from "@ant-design/icons";
 import Rating from "@mui/material/Rating";
 
-const Container = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-`;
-
 const StoreName = styled.div`
   box-sizing: border-box;
   margin-top: 5vh;
@@ -24,7 +18,14 @@ const StoreName = styled.div`
   font-size: 1.8em;
   font-weight: 500;
   font-family: "Noto Sans KR", sans-serif;
+  display: flex;
   position: relative;
+`;
+
+const Container = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
 `;
 
 const StoreDetailLeft = styled.div`
@@ -209,7 +210,7 @@ const BrandMenuContainer = styled.div`
 const StoreDetailRight = styled.div`
   box-sizing: border-box;
   margin-top: 0;
-  left: 50vw;
+  right: 0;
   width: 50vw;
   height: auto;
   display: flex;
@@ -217,6 +218,7 @@ const StoreDetailRight = styled.div`
   justify-content: center;
   align-items: left;
   position: fixed;
+  overflow: auto;
 `;
 
 const StoreReservationContainer = styled.div`
@@ -298,8 +300,9 @@ const StoreDetail = () => {
       : `영업 종료 · ${openHour}:00에 영업 시작`;
 
   return (
-    <Container>
+    <>
       <StoreName>{store.storeName}</StoreName>
+      <Container>
       <StoreDetailLeft>
         <BrandImgContainer>
           <BrandImage src={store.brandImg} />
@@ -376,23 +379,9 @@ const StoreDetail = () => {
         <StoreReservationContainer>
           <StoreDetailReservation />
         </StoreReservationContainer>
-
-        <br />
-        <br />
-        <>
-          <br />
-          <br />
-        </>
-        <>
-          <br />
-          <br />
-        </>
-        <>
-          <br />
-          <br />
-        </>
       </StoreDetailRight>
     </Container>
+    </>
   );
 };
 

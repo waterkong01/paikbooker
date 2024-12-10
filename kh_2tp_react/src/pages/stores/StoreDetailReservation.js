@@ -5,21 +5,20 @@ import AxiosApi from "../../api/AxiosApi";
 
 const StoreReservationContainer = styled.div`
   box-sizing: border-box;
-  width: 80vh;
+  width: 50vw;
 `;
 
 const StoreReservationTimeContainer = styled.div`
   box-sizing: border-box;
   width: 100%;
-  margin-top: 2vh;
-  margin-bottom: 5vh;
+  margin-top: 0;
 `;
 
 const StoreReservationMenuTitle = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 40px;
-  margin-top: 2vh;
+  margin-top: 0;
   font-size: 1.5em;
   font-weight: 500;
   font-family: "Noto Sans KR", sans-serif;
@@ -30,16 +29,18 @@ const StoreReservationMenuTitle = styled.div`
 // 시간 버튼 컨테이너
 const TimeButtonContainer = styled.div`
   display: flex;
+  margin-top: 1vh;
   width: 90%;
   flex-wrap: wrap; /* 버튼이 많을 경우 줄 바꿈 처리 */
-  row-gap: 5px;
+  justify-content: left;
+  row-gap: 10px;
   column-gap: 10px;
 `;
 
 const TimeButton = styled.button`
-  width: 10vw;
+  width: calc((100% - (5 - 1) * 10px) / 5); /* 기본 5개 배치 */
   height: 4vh;
-  margin: 5px;
+
   padding: 10px 20px;
   border: none;
   border-radius: 30px;
@@ -89,6 +90,7 @@ const StoreReservationPersonContainer = styled.div`
 // 인원 버튼 컨테이너
 const PersonButtonContainer = styled.div`
   display: flex;
+  margin-top: 1vh;
   flex-wrap: wrap; /* 버튼이 많을 경우 줄 바꿈 처리 */
   gap: 5px; /* 버튼 간격 */
 `;
@@ -112,7 +114,7 @@ const PersonButton = styled.button`
 
 const StoreReservationConfirmContainer = styled.div`
   box-sizing: border-box;
-  width: 45%;
+  width: 60%;
   margin-top: 2vh;
   margin-bottom: 5vh;
   display: flex;
@@ -121,25 +123,34 @@ const StoreReservationConfirmContainer = styled.div`
 
 const StoreReservationConfirmList = styled.div`
   display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
 `;
 
 const StoreReservationConfirmIndex = styled.div`
   box-sizing: border-box;
   width: 30%;
-  margin-top: 2vh;
-  margin-bottom: 5vh;
   line-height: 2.6em;
   position: relative;
+  font-weight: bold;
 `;
 
 const StoreReservationConfirmContents = styled.div`
   box-sizing: border-box;
   width: 70%;
-  margin-top: 2vh;
-  margin-bottom: 5vh;
   line-height: 2.6em;
   position: relative;
 `;
+
+const StoreReservationConfirmHr = styled.hr`
+  box-sizing: border-box;
+  width: 85%;
+  margin-top: 0.3vh;
+  margin-bottom: 0.3vh;
+`;
+
 // 예약 버튼 스타일
 const SubmitButton = styled.button`
   margin: 5px;
@@ -299,21 +310,24 @@ const StoreDetailReservation = () => {
           </StoreReservationSubMenuTitle>
           <StoreReservationConfirmList>
             <StoreReservationConfirmIndex>
-              <p>예약지점</p>
-              <hr />
-              <p>예약시간</p>
-              <hr />
-              <p>인원수</p>
-              <hr />
+              예약지점
             </StoreReservationConfirmIndex>
             <StoreReservationConfirmContents>
-              <p>{storeName}</p>
-              <hr />
-              <p>{selectedTime}:00</p>
-              <hr />
-              <p>{selectedPerson}명</p>
-              <hr />
+              {storeName}
             </StoreReservationConfirmContents>
+            <StoreReservationConfirmHr />
+            <StoreReservationConfirmIndex>
+              예약시간
+            </StoreReservationConfirmIndex>
+            <StoreReservationConfirmContents>
+              {selectedTime ? `${selectedTime}:00` : ""}
+            </StoreReservationConfirmContents>
+            <StoreReservationConfirmHr />
+            <StoreReservationConfirmIndex>인원수</StoreReservationConfirmIndex>
+            <StoreReservationConfirmContents>
+              {selectedPerson ? `${selectedPerson}명` : ""}
+            </StoreReservationConfirmContents>
+            <StoreReservationConfirmHr />
           </StoreReservationConfirmList>
           <SubmitButton
             className="available"
