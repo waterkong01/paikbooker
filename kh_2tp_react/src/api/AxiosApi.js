@@ -30,7 +30,6 @@ const AxiosApi = {
   },
 
   // 회원가입
-
   signup: async (
     userName,
     userId,
@@ -53,22 +52,24 @@ const AxiosApi = {
     return await axios.post(`${PAIKBOOKER_DOMAIN}/auth/signup`, signupData);
   },
 
+  // 회원정보수정 - 기존정보가져오기
   getMemberInfo: async (userId) => {
     return await axios.get(
       `${PAIKBOOKER_DOMAIN}/member/getMemberInfo/${userId}`
     );
   },
 
+  // 회원정보수정 - update
   updateMemberInfo: (userId, data) => {
     return axios.patch(`${PAIKBOOKER_DOMAIN}/member/${userId}`, data);
   },
 
+  // 회원정보수정 - 비밀번호수정
   updatePassword: async (userId, old_pw, new_pw) => {
     const passwordData = {
       old_pw: old_pw,
       new_pw: new_pw,
     };
-
     return await axios.put(
       `${PAIKBOOKER_DOMAIN}/member/updatePassword/${userId}`,
       passwordData

@@ -23,7 +23,7 @@ const StoreReservationMenuTitle = styled.div`
   font-weight: 500;
   font-family: "Noto Sans KR", sans-serif;
   position: relative;
-  overflow: ;
+
 `;
 
 // 시간 버튼 컨테이너
