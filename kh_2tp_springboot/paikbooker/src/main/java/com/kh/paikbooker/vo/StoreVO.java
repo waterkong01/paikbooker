@@ -25,4 +25,8 @@ public class StoreVO {
     private String brandMarker;
     private String brandImg;
 
+    private BrandVO brandVO;   // BrandVO 객체를 추가
+    private ReviewVO reviewVO; // ReviewVO 객체를 추가
+    private ReservationVO reservationTimeVO; // ReservationTimeVO 객체를 추가
+
 }

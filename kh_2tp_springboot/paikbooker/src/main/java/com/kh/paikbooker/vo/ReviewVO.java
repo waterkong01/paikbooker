@@ -24,5 +24,6 @@ public class ReviewVO {
     private BigDecimal rvTaste;
     private BigDecimal rvVibe;
     private BigDecimal rvKind;
+    private BigDecimal rvAverage; // 리뷰 평점
 
 }

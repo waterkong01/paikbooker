@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Background = styled.div`
@@ -21,6 +22,7 @@ const Left = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  cursor: pointer;
   img {
     width: 76px;
   }
@@ -46,6 +48,7 @@ const NavBar1 = () => {
             src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F00백부커02B.png?alt=media&token=9bccec14-c221-42c0-8342-16f463bcb1f0"
             alt="Logo"
           />
+          <Link to={"/"}></Link>
         </Left>
         <Right>
           <img

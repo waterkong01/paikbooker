@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import StoreSearch from "../pages/search/StoreSearch";
+import StoreSearch from "../pages/stores/StoreSearch";
 
 const Background = styled.div`
   width: 100%;
@@ -31,7 +31,11 @@ const NavBar2 = ({ getDataFromServerAndUpdateStoreList }) => {
     <>
       <Background>
         <SearchBox>
-          <StoreSearch />
+        <StoreSearch
+              getDataFromServerAndUpdateStoreList={
+                getDataFromServerAndUpdateStoreList
+              }
+            />
         </SearchBox>
       </Background>
     </>
