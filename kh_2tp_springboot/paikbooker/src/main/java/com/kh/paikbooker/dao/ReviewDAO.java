@@ -28,7 +28,7 @@ public class ReviewDAO {
     // RESERVATION_TB에서 r_submit_time 찾기
     private static final String R_SUBMIT_TIME_FIND_QUERY = "SELECT r_submit_time FROM RESERVATION_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
     // RESERVATION_TB에서 r_no 찾기
-    private static final String R_NO_FIND_QUERY = "SELECT r_no FROM RESERVATION_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
+    private static final String R_NO_FIND_QUERY = "SELECT R_NO FROM RESERVATION_TB WHERE USER_ID = ? AND STORE_NAME = ? AND R_TIME = ?";
     // REVIEW_TB에서 rv_no 찾기
     private static final String RV_NO_FIND_QUERY = "SELECT rv_no FROM REVIEW_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
     // REVIEW_TB에서 r_no 찾기

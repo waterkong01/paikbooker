@@ -77,7 +77,7 @@ const AddReview = () => {
         try {
             const response = await AxiosApi.reviewInsert(reviewData);
             console.log(response);
-            alert('리뷰가 추가되었습니다!');
+            alert(`리뷰가 추가되었습니다!`);
             navigate("/reservation"); // 추가 성공 시 리뷰 리스트 페이지로 이동
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);

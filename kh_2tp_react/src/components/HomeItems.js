@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 
 // 두 위도-경도 좌표 간의 거리를 계산하는 Haversine 공식
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -184,6 +185,14 @@ const HomeItemBlock = styled.div`
   }
 `;
 
+// Link에 대한 스타일을 적용
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  transition: color 0.3s;
+`;
+
 const HomeItem = ({ dataReceivedAfterSearch }) => {
   const [sortType, setSortType] = useState("name");
   const [sortByDistance, setSortByDistance] = useState(false);
@@ -293,6 +302,7 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
 
               <div className="stores">
                 {brandData.stores.map((store) => (
+                  <StyledLink to={`/stores/${store.storeNo}`}>
                   <div key={store.storeNo} className="storeBox">
                     <div
                       className="storeBoxUp"
@@ -319,8 +329,10 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                       </div>
                     </div>
                   </div>
+                </StyledLink>
                 ))}
               </div>
+              
             </div>
           ))}
         </div>
