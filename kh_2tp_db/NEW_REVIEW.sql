@@ -34,6 +34,19 @@ NOCYCLE
 NOCACHE;
 
 
+-- 트리거 생성이 아닌 View 생성 선택 이유: 리뷰 변경 후 즉각 반영됨, 코드 간결
+-- View 생성
+-- 평점 항목 평균 계산 후 소수점 첫째 자리까지 반올림
+-- 각 STORE_NAME 별로 그룹화해서 평균 평점 계산
+-- V_STORE_AVG라는 이름으로 View 생성
+CREATE OR REPLACE VIEW V_STORE_AVG AS
+SELECT 
+    STORE_NAME, 
+    ROUND(AVG((RV_PRICE + RV_TASTE + RV_VIBE + RV_KIND) / 4), 1) AS average_rating
+FROM REVIEW_TB
+GROUP BY STORE_NAME;
+
+
 -- REVIEW 더미 데이터 생성
 INSERT INTO REVIEW_TB (RV_NO, RV_DATE, R_NO, R_TIME, R_SUBMIT_TIME, USER_ID, STORE_NAME, RV_PRICE, RV_TASTE, RV_VIBE, RV_KIND, RV_AVERAGE)
 SELECT RV_NO_SEQ.NEXTVAL, SYSDATE, 1,
@@ -69,5 +82,19 @@ DELETE FROM REVIEW_TB WHERE RV_NO = '5'; 	/* 리뷰번호 단위로 데이터 �
 DROP SEQUENCE RV_NO_SEQ;					/* 리뷰 시퀀스 삭제 */
 
 DROP TABLE REVIEW_TB;						/* 리뷰 테이블 삭제 */
+
+-- 모든 매장 평균 평점 조회
+SELECT * FROM V_STORE_AVG;
+
+-- V_STORE_AVG를 직접 JOIN해서 평균 평점 조회
+SELECT
+	S.*,
+	V.AVERAGE_RATING
+FROM	
+	STORE_TB S
+LEFT JOIN
+	V_STORE_AVG V
+ON
+	S.STORE_NAME = V.STORE_NAME;
 
 COMMIT;
