@@ -1,9 +1,6 @@
 package com.kh.paikbooker.dao;
 
-import com.kh.paikbooker.vo.BrandVO;
-import com.kh.paikbooker.vo.ReservationVO;
-import com.kh.paikbooker.vo.ReviewVO;
-import com.kh.paikbooker.vo.StoreVO;
+import com.kh.paikbooker.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,10 +24,10 @@ public class SearchDropDownDAO {
         StringBuilder sql = new StringBuilder(
                 "SELECT s.STORE_NAME, s.STORE_NO, s.STORE_PHONE, s.STORE_ADDR, s.STORE_MAP, " +
                         "b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG, " +
-                        "r.RV_AVERAGE, res.R_TIME " +
+                        "rv.AVERAGE_RATING, res.R_TIME " +
                         "FROM STORE_TB s " +
                         "JOIN BRAND_TB b ON s.BRAND_NAME = b.BRAND_NAME " +
-                        "LEFT JOIN REVIEW_TB r ON s.STORE_NAME = r.STORE_NAME " +
+                        "LEFT JOIN V_STORE_AVG rv ON S.STORE_NAME = rv.STORE_NAME " +
                         "LEFT JOIN RESERVATION_TB res ON s.STORE_NO = res.STORE_NO " +
                         "WHERE 1=1"
         );
@@ -110,10 +107,10 @@ public class SearchDropDownDAO {
             brand.setBrandImg(rs.getString("BRAND_IMG"));
             store.setBrandVO(brand); // StoreVO의 brandVO 필드에 브랜드 정보 추가
 
-//            // REVIEW_TB 테이블에서 가져온 컬럼
-//            ReviewVO review = new ReviewVO();
-//            review.setRvAverage(rs.getBigDecimal("RV_AVERAGE"));
-//            store.setReviewVO(review); // StoreVO의 reviewVO 필드에 리뷰 정보 추가
+            // 조인으로 리뷰평균 가져오는 컬럼
+            AvgRatingVO avgRatingVO = new AvgRatingVO();
+            avgRatingVO.setAverageRating(rs.getDouble("AVERAGE_RATING"));
+            store.setAvgRatingVO(avgRatingVO); // StoreVO의 reviewVO 필드에 리뷰 정보 추가
 
             // RESERVATION_TB 테이블에서 가져온 컬럼
             ReservationVO reservation = new ReservationVO();

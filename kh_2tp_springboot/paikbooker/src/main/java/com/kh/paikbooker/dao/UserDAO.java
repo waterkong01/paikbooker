@@ -1,6 +1,6 @@
 package com.kh.paikbooker.dao;
 
-import com.kh.miniProject.vo.MemberVo;
+import com.kh.paikbooker.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class MemberDao {
+public class UserDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -32,9 +32,9 @@ public class MemberDao {
     private static final String SELECT_ALL_MEMBERS = "SELECT * FROM USER_TB";
 
     // 로그인
-    public boolean login(String user_id, String user_pw) {
+    public boolean login(String userId, String userPw) {
         try {
-            int count = jdbcTemplate.queryForObject(LOGIN_QUERY, new Object[]{user_id, user_pw}, Integer.class);
+            int count = jdbcTemplate.queryForObject(LOGIN_QUERY, new Object[]{userId, userPw}, Integer.class);
             return count > 0;
         } catch (DataAccessException e) {
             log.error("로그인 조회 실패", e);
@@ -45,9 +45,9 @@ public class MemberDao {
 
 
     // 회원 가입
-    public boolean signup(MemberVo vo) {
+    public boolean signup(UserVO vo) {
         try {
-            int result = jdbcTemplate.update(SIGNUP_QUERY, vo.getUser_name(), vo.getUser_id(), vo.getUser_pw(), vo.getUser_mail(), vo.getUser_birth(), vo.getUser_phone(), vo.getUser_img());
+            int result = jdbcTemplate.update(SIGNUP_QUERY, vo.getUserName(), vo.getUserId(), vo.getUserPw(), vo.getUserMail(), vo.getUserBirth(), vo.getUserPhone(), vo.getUserImg());
             return result > 0;
         } catch (DataAccessException e) {
             log.error("회원 가입 중 예외 발생", e);
@@ -58,9 +58,9 @@ public class MemberDao {
 
 
     // 회원 아이디 중복 검사
-    public boolean idCheck(String user_id) {
+    public boolean idCheck(String userId) {
         try {
-            int count = jdbcTemplate.queryForObject(CHECK_ID, new Object[]{user_id}, Integer.class);
+            int count = jdbcTemplate.queryForObject(CHECK_ID, new Object[]{userId}, Integer.class);
             return count > 0;
         } catch (DataAccessException e) {
             log.error("아이디 중복 확인 중 에러 발생", e);
@@ -78,9 +78,9 @@ public class MemberDao {
 //        }
 //    }
 
-    public MemberVo getMemberInfo(String user_id) {
+    public UserVO getMemberInfo(String userId) {
         try {
-            List<MemberVo> members = jdbcTemplate.query(SELECT_INFO, new Object[]{user_id}, new MemberRowMapper());
+            List<UserVO> members = jdbcTemplate.query(SELECT_INFO, new Object[]{userId}, new MemberRowMapper());
             return members.isEmpty() ? null : members.get(0);
         } catch (DataAccessException e) {
             log.error("회원 정보 조회 중 에러 발생", e);
@@ -110,7 +110,7 @@ public class MemberDao {
             int rowsAffected = jdbcTemplate.update(queryBuilder.toString(), params.toArray());
             return rowsAffected > 0;
         } catch (DataAccessException e) {
-            log.error("회원 정보 수정 중 에러 발생", e);
+            log.error("회원 정보 수정 중 에러 발생DAO", e);
             return false;
         }
     }
@@ -120,9 +120,9 @@ public class MemberDao {
 
 
     // 회원 삭제
-    public boolean deleteMember(String user_mail) {
+    public boolean deleteMember(String userMail) {
         try {
-            int rowsAffected = jdbcTemplate.update(DELETE_MEMBER, user_mail);
+            int rowsAffected = jdbcTemplate.update(DELETE_MEMBER, userMail);
             return rowsAffected > 0;
         } catch (DataAccessException e) {
             log.error("회원 삭제 중 에러 발생", e);
@@ -130,9 +130,9 @@ public class MemberDao {
         }
     }
 
-    public boolean isEmailExist(String email) {
+    public boolean isEmailExist(String Email) {
         try {
-            int count = jdbcTemplate.queryForObject(CHECK_EMAIL, new Object[]{email}, Integer.class);
+            int count = jdbcTemplate.queryForObject(CHECK_EMAIL, new Object[]{Email}, Integer.class);
             return count > 0;
         } catch (DataAccessException e) {
             log.error("이메일 존재 여부 확인 중 에러 ", e);
@@ -158,13 +158,14 @@ public class MemberDao {
 ////            );
 ////        }
 
-    private static class MemberRowMapper implements RowMapper<MemberVo> {
+    private static class MemberRowMapper implements RowMapper<UserVO> {
         @Override
-        public MemberVo mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new MemberVo(
-                    rs.getString("user_name"),
+        public UserVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new UserVO(
+                    rs.getInt("user_no"),
                     rs.getString("user_id"),
                     rs.getString("user_pw"),
+                    rs.getString("user_name"),
                     rs.getString("user_mail"),
                     rs.getDate("user_birth"),
                     rs.getString("user_phone"),

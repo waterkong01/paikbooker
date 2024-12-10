@@ -235,7 +235,7 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
         sortedStores.sort((a, b) => a.storeName.localeCompare(b.storeName));
       } else if (sortType === "rating") {
         sortedStores.sort(
-          (a, b) => b.reviewVO.rvAverage - a.reviewVO.rvAverage
+          (a, b) => b.avgRatingVO.averageRating - a.avgRatingVO.averageRating
         );
       }
 
@@ -303,24 +303,15 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                     <div className="storeBoxDown">
                       <div className="boxDTextUp">{store.storeName}</div>
                       <div className="boxDTextDown">
-                        <p
-                          style={{
-                            color: "RED",
-                            display: "inline",
-                            marginRight: "2px",
-                          }}
-                        >
-                          ★
-                        </p>
+                        <p style={{ color: "RED", display: "inline" }}>★ </p>
                         <p style={{ display: "inline" }}>
-                          {store.reviewVO.rvAverage}
+                          {store.avgRatingVO.averageRating}
                         </p>
                         <p
                           style={{
                             color: "#a4a4a4",
                             display: "inline",
-                            fontSize: "1em",
-                            marginRight: "10px",
+                            fontSize: "13px",
                           }}
                         >
                           {store.brandVO.brandFood}ㆍ{store.storeAddr}

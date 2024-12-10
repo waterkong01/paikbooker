@@ -1,17 +1,13 @@
 package com.kh.paikbooker.controller;
 
-import com.kh.miniProject.dao.MemberDao;
-import com.kh.miniProject.vo.MemberVo;
+import com.kh.paikbooker.dao.UserDAO;
+import com.kh.paikbooker.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,13 +15,14 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/member")
 @RequiredArgsConstructor
-public class MemberController {
-    private final MemberDao memberDao;
+public class UserController {
+
+    private final UserDAO userDao;
 
 
 //    @GetMapping("/getMemberInfo/{user_id}")
-//    public ResponseEntity<MemberVo> getMemberInfo(@PathVariable String user_id) {
-//        MemberVo member = memberDao.getMemberInfo(user_id);
+//    public ResponseEntity<UserVo> getMemberInfo(@PathVariable String user_id) {
+//        UserVo user = userDao.getMemberInfo(user_id);
 //        if (member == null) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 //        }
@@ -34,9 +31,9 @@ public class MemberController {
 
     // 회원 정보 조회
     @GetMapping("/getMemberInfo/{userId}")
-    public ResponseEntity<MemberVo> getMemberInfo(@PathVariable("userId") String userId) {
+    public ResponseEntity<UserVO> getMemberInfo(@PathVariable("userId") String userId) {
         try {
-            MemberVo member = memberDao.getMemberInfo(userId);
+            UserVO member = userDao.getMemberInfo(userId);
             if (member != null) {
                 return ResponseEntity.ok(member);
             } else {
@@ -50,11 +47,11 @@ public class MemberController {
 
 
     // 회원 정보 수정
-    @PatchMapping("/{user_id}")
-    public ResponseEntity<String> updateMember(@PathVariable("user_id") String user_id,
+    @PatchMapping("/{userId}")
+    public ResponseEntity<String> updateMember(@PathVariable("userId") String userId,
                                                @RequestBody Map<String, Object> updatedFields) {
         try {
-            boolean isUpdated = memberDao.updateMember(user_id, updatedFields);
+            boolean isUpdated = userDao.updateMember(userId, updatedFields);
             if (isUpdated) {
                 return ResponseEntity.ok("회원 정보가 성공적으로 수정되었습니다.");
             } else {
@@ -62,7 +59,7 @@ public class MemberController {
                         .body("회원 정보 수정에 실패했습니다.");
             }
         } catch (Exception e) {
-            log.error("회원 정보 수정 중 에러 발생", e);
+            log.error("회원 정보 수정 중 에러 발생Controller", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("서버 에러: 회원 정보를 수정할 수 없습니다.");
         }
@@ -70,9 +67,9 @@ public class MemberController {
 
 
     // 회원 삭제
-    @DeleteMapping("/{user_id}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<Boolean> deleteMember(@PathVariable String user_id) {
-        boolean isSuccess = memberDao.deleteMember(user_id);
+        boolean isSuccess = userDao.deleteMember(user_id);
         return ResponseEntity.ok(isSuccess);
     }
 

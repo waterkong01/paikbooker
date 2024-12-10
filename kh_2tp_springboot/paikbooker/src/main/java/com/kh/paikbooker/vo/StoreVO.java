@@ -28,5 +28,6 @@ public class StoreVO {
     private BrandVO brandVO;   // BrandVO 객체를 추가
     private ReviewVO reviewVO; // ReviewVO 객체를 추가
     private ReservationVO reservationTimeVO; // ReservationTimeVO 객체를 추가
+    private AvgRatingVO avgRatingVO; // AvgRatingVO 객체를 추가
 
 }

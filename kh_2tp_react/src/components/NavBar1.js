@@ -52,10 +52,12 @@ const NavBar1 = () => {
           </Link>
         </Left>
         <Right>
+          <Link to="/LoginHome">
           <img
             src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2FProfile.png?alt=media&token=6f3e2ec4-737f-4646-9d52-254c21319266"
             alt="Profile"
           />
+          </Link>
         </Right>
       </Background>
     </>
