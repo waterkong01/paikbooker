@@ -110,10 +110,10 @@ public class SearchDropDownDAO {
             brand.setBrandImg(rs.getString("BRAND_IMG"));
             store.setBrandVO(brand); // StoreVO의 brandVO 필드에 브랜드 정보 추가
 
-            // REVIEW_TB 테이블에서 가져온 컬럼
-            ReviewVO review = new ReviewVO();
-            review.setRvAverage(rs.getBigDecimal("RV_AVERAGE"));
-            store.setReviewVO(review); // StoreVO의 reviewVO 필드에 리뷰 정보 추가
+//            // REVIEW_TB 테이블에서 가져온 컬럼
+//            ReviewVO review = new ReviewVO();
+//            review.setRvAverage(rs.getBigDecimal("RV_AVERAGE"));
+//            store.setReviewVO(review); // StoreVO의 reviewVO 필드에 리뷰 정보 추가
 
             // RESERVATION_TB 테이블에서 가져온 컬럼
             ReservationVO reservation = new ReservationVO();

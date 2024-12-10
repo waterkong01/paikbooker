@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavBar1 from "../components/NavBar1";
 import NavBar2 from "../components/NavBar2";
@@ -18,13 +18,13 @@ const StyledMain = styled.main`
 `;
 
 const Layout = () => {
+  // 카테고리 Dropdown 목록
+  const [brandName, setBrandName] = useState("");
+  const [reservationTime, setReservationTime] = useState("");
+  const [region, setRegion] = useState("");
+  const location = useLocation(); // 현재 경로 가져오기
 
-    // 카테고리 Dropdown 목록  
-    const [brandName, setBrandName] = useState("");
-    const [reservationTime, setReservationTime] = useState("");
-    const [region, setRegion] = useState("");
-
-      // Main 화면 띄어주는 Component에 Data 전달 (조건 검색 후 받은 Data[])
+  // Main 화면 띄어주는 Component에 Data 전달 (조건 검색 후 받은 Data[])
   const [dataReceivedAfterSearch, setDataReceivedAfterSearch] = useState([]); // 검색된 매장들
 
   // 컴포넌트가 처음 로드될 때, 기본적으로 모든 매장을 가져오는 검색
@@ -60,23 +60,26 @@ const Layout = () => {
     },
     []
   );
-  
+
   return (
     <>
       <StyledHeader>
         <NavBar1 />
-        <NavBar2 getDataFromServerAndUpdateStoreList={
-          getDataFromServerAndUpdateStoreList
-        }/>
+        <NavBar2
+          getDataFromServerAndUpdateStoreList={
+            getDataFromServerAndUpdateStoreList
+          }
+        />
         <NavBar3 />
       </StyledHeader>
 
       <StyledMain>
-              {/* 디버깅용 상태 출력 */}
-      {console.log("현재 stores 상태:", dataReceivedAfterSearch)}
-      <HomeItem dataReceivedAfterSearch={dataReceivedAfterSearch} />
-        {/* <Main /> */}
-        {/* <Outlet /> */}
+        {/* 디버깅용 상태 출력 */}
+        {console.log("현재 stores 상태:", dataReceivedAfterSearch)}{""}
+        {location.pathname === "/" && (
+        <HomeItem dataReceivedAfterSearch={dataReceivedAfterSearch} />
+      )}
+        <Outlet />
       </StyledMain>
     </>
   );

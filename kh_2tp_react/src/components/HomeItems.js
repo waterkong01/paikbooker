@@ -5,27 +5,27 @@ import { useState, useMemo } from "react";
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   // 각도를 라디안으로 변환하는 함수
   const toRad = (value) => (value * Math.PI) / 180;
-  
+
   const R = 6371; // 지구의 반지름 (단위: 킬로미터)
 
   // 위도와 경도의 차이를 라디안으로 변환
-  const deltaLat = toRad(lat2 - lat1);  // 위도의 차이
-  const deltaLon = toRad(lon2 - lon1);  // 경도의 차이
+  const deltaLat = toRad(lat2 - lat1); // 위도의 차이
+  const deltaLon = toRad(lon2 - lon1); // 경도의 차이
 
   // Haversine 공식에서 사용되는 값 계산
   const a =
-    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +  // 위도 차이에 대한 함수
-    Math.cos(toRad(lat1)) *  // 첫 번째 좌표의 위도에 대한 함수
-    Math.cos(toRad(lat2)) *  // 두 번째 좌표의 위도에 대한 함수
-    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2); // 경도 차이에 대한 함수
+    Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) + // 위도 차이에 대한 함수
+    Math.cos(toRad(lat1)) * // 첫 번째 좌표의 위도에 대한 함수
+      Math.cos(toRad(lat2)) * // 두 번째 좌표의 위도에 대한 함수
+      Math.sin(deltaLon / 2) *
+      Math.sin(deltaLon / 2); // 경도 차이에 대한 함수
 
   // 두 점 간의 중앙각을 계산
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   // 거리를 계산하여 반환 (단위: 킬로미터)
-  return R * c; 
+  return R * c;
 };
-
 
 const SortBy = styled.div`
   display: flex;
@@ -67,43 +67,40 @@ const SortBy = styled.div`
 
   /* First span - initial rotation state */
   button span:nth-child(1) {
-    box-shadow:
-    -7px -7px 20px 0px #fff9,
-   -4px -4px 5px 0px #fff9,
-   7px 7px 20px 0px #0002,
-   4px 4px 5px 0px #0001;
-  -webkit-transform: rotateX(90deg);
-  -moz-transform: rotateX(90deg);
-  transform: rotateX(90deg);
-  -webkit-transform-origin: 50% 50% -20px;
-  -moz-transform-origin: 50% 50% -20px;
-  transform-origin: 50% 50% -20px;
+    box-shadow: -7px -7px 20px 0px #fff9, -4px -4px 5px 0px #fff9,
+      7px 7px 20px 0px #0002, 4px 4px 5px 0px #0001;
+    -webkit-transform: rotateX(90deg);
+    -moz-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
     transform: rotateX(90deg); /* Initially rotated vertically */
   }
 
   /* Second span - initially in view */
   button span:nth-child(2) {
     -webkit-transform: rotateX(0deg);
-  -moz-transform: rotateX(0deg);
-  transform: rotateX(0deg);
-  -webkit-transform-origin: 50% 50% -20px;
-  -moz-transform-origin: 50% 50% -20px;
-  transform-origin: 50% 50% -20px;
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+    -webkit-transform-origin: 50% 50% -20px;
+    -moz-transform-origin: 50% 50% -20px;
+    transform-origin: 50% 50% -20px;
   }
 
   /* Hover state */
   button:hover span:nth-child(1) {
     -webkit-transform: rotateX(0deg);
-  -moz-transform: rotateX(0deg);
-  transform: rotateX(0deg);
-}
-  
+    -moz-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+  }
+
   button:hover span:nth-child(2) {
     background: #e0e5ec;
-  color: #e0e5ec;
-  -webkit-transform: rotateX(-90deg);
-  -moz-transform: rotateX(-90deg);
-  transform: rotateX(-90deg);
+    color: #e0e5ec;
+    -webkit-transform: rotateX(-90deg);
+    -moz-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
   }
 `;
 
@@ -195,9 +192,12 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
   const referenceLon = 127.03646889929213;
 
   const stores = useMemo(() => {
-    return Array.isArray(dataReceivedAfterSearch) && dataReceivedAfterSearch.length > 0
+    return Array.isArray(dataReceivedAfterSearch) &&
+      dataReceivedAfterSearch.length > 0
       ? dataReceivedAfterSearch.reduce((acc, curr) => {
-          const brand = acc.find((item) => item.brand.brandName === curr.brandVO.brandName);
+          const brand = acc.find(
+            (item) => item.brand.brandName === curr.brandVO.brandName
+          );
           if (brand) {
             brand.stores.push(curr);
           } else {
@@ -207,7 +207,8 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
             });
           }
           return acc;
-        }, []): [];
+        }, [])
+      : [];
   }, [dataReceivedAfterSearch]);
 
   const sortedStores = useMemo(() => {
@@ -216,14 +217,26 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
 
       if (sortByDistance) {
         sortedStores.sort((a, b) => {
-          const distanceA = calculateDistance(referenceLat, referenceLon, a.storeLat, a.storeLon);
-          const distanceB = calculateDistance(referenceLat, referenceLon, b.storeLat, b.storeLon);
+          const distanceA = calculateDistance(
+            referenceLat,
+            referenceLon,
+            a.storeLat,
+            a.storeLon
+          );
+          const distanceB = calculateDistance(
+            referenceLat,
+            referenceLon,
+            b.storeLat,
+            b.storeLon
+          );
           return distanceA - distanceB;
         });
       } else if (sortType === "name") {
         sortedStores.sort((a, b) => a.storeName.localeCompare(b.storeName));
       } else if (sortType === "rating") {
-        sortedStores.sort((a, b) => b.reviewVO.rvAverage - a.reviewVO.rvAverage);
+        sortedStores.sort(
+          (a, b) => b.reviewVO.rvAverage - a.reviewVO.rvAverage
+        );
       }
 
       return { ...brandData, stores: sortedStores };
@@ -290,13 +303,24 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                     <div className="storeBoxDown">
                       <div className="boxDTextUp">{store.storeName}</div>
                       <div className="boxDTextDown">
-                        <p style={{ color: "RED", display: "inline" }}>★ </p>
-                        <p style={{ display: "inline" }}>{store.reviewVO.rvAverage}</p>
+                        <p
+                          style={{
+                            color: "RED",
+                            display: "inline",
+                            marginRight: "2px",
+                          }}
+                        >
+                          ★
+                        </p>
+                        <p style={{ display: "inline" }}>
+                          {store.reviewVO.rvAverage}
+                        </p>
                         <p
                           style={{
                             color: "#a4a4a4",
                             display: "inline",
-                            fontSize: "13px",
+                            fontSize: "1em",
+                            marginRight: "10px",
                           }}
                         >
                           {store.brandVO.brandFood}ㆍ{store.storeAddr}

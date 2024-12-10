@@ -44,11 +44,12 @@ const NavBar1 = () => {
     <>
       <Background>
         <Left>
-          <img
-            src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F00백부커02B.png?alt=media&token=9bccec14-c221-42c0-8342-16f463bcb1f0"
-            alt="Logo"
-          />
-          <Link to={"/"}></Link>
+          <Link to="/">
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/kh-basic-frontend-react-f5a7b.firebasestorage.app/o/PAIKBOOKER%2F00백부커02B.png?alt=media&token=9bccec14-c221-42c0-8342-16f463bcb1f0"
+              alt="Logo"
+            />
+          </Link>
         </Left>
         <Right>
           <img

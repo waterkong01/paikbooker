@@ -202,7 +202,6 @@ const BrandMenuContainer = styled.div`
   align-items: top;
   overflow: hidden;
   border-radius: 10px;
-  background-color: #f0f0f0;
   gap: 10px;
   overflow-x: auto;
 `;
@@ -217,7 +216,8 @@ const StoreDetailRight = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: left;
-  position: fixed;
+  position: sticky;
+  top: 0;
   overflow-y: auto;
   overflow-x: hidden;
 `;
@@ -304,84 +304,84 @@ const StoreDetail = () => {
     <>
       <StoreName>{store.storeName}</StoreName>
       <Container>
-      <StoreDetailLeft>
-        <BrandImgContainer>
-          <BrandImage src={store.brandImg} />
-        </BrandImgContainer>
-        <StoreInfoContainer>
-          <StoreAddrAndPhoneContainer>
-            <StoreAddr>
-              <p>{store.storeAddr}</p>
-            </StoreAddr>
-            <StoreHourContainer>
-              <p>{isOpen}</p>
-            </StoreHourContainer>
-            <StorePhoneContainer>
-              <StorePhone>
-                <p>{store.storePhone}</p>
-              </StorePhone>
-              <StorePhoneImg>
-                <PhoneFilled style={{ fontSize: "20px" }} />
-              </StorePhoneImg>
-            </StorePhoneContainer>
-          </StoreAddrAndPhoneContainer>
-          <StoreRatingContainer>
-            <StoreRatingText>
-              가격
-              <br />맛<br />
-              분위기
-              <br />
-              친절함
-              <br />
-            </StoreRatingText>
-            <StoreRatingStars>
-              <Rating
-                name="half-rating-read"
-                defaultValue={avgPrice}
-                precision={0.5}
-                readOnly
-              />
-              <br />
-              <Rating
-                name="half-rating-read"
-                defaultValue={avgTaste}
-                precision={0.5}
-                readOnly
-              />
-              <br />
-              <Rating
-                name="half-rating-read"
-                defaultValue={avgVibe}
-                precision={0.5}
-                readOnly
-              />
-              <br />
-              <Rating
-                name="half-rating-read"
-                defaultValue={avgKind}
-                precision={0.5}
-                readOnly
-              />
-              <br />
-            </StoreRatingStars>
-          </StoreRatingContainer>
-        </StoreInfoContainer>
-        <StoreLeftMenuTitle>{store.storeName} 지도</StoreLeftMenuTitle>
-        <BrandMapContainer>
-          <StoreDetailMap />
-        </BrandMapContainer>
-        <StoreLeftMenuTitle>{store.storeName} 메뉴</StoreLeftMenuTitle>
-        <BrandMenuContainer>
-          <StoreDetailMenu />
-        </BrandMenuContainer>
-      </StoreDetailLeft>
+        <StoreDetailLeft>
+          <BrandImgContainer>
+            <BrandImage src={store.brandImg} />
+          </BrandImgContainer>
+          <StoreInfoContainer>
+            <StoreAddrAndPhoneContainer>
+              <StoreAddr>
+                <p>{store.storeAddr}</p>
+              </StoreAddr>
+              <StoreHourContainer>
+                <p>{isOpen}</p>
+              </StoreHourContainer>
+              <StorePhoneContainer>
+                <StorePhone>
+                  <p>{store.storePhone}</p>
+                </StorePhone>
+                <StorePhoneImg>
+                  <PhoneFilled style={{ fontSize: "20px" }} />
+                </StorePhoneImg>
+              </StorePhoneContainer>
+            </StoreAddrAndPhoneContainer>
+            <StoreRatingContainer>
+              <StoreRatingText>
+                가격
+                <br />맛<br />
+                분위기
+                <br />
+                친절함
+                <br />
+              </StoreRatingText>
+              <StoreRatingStars>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={avgPrice}
+                  precision={0.5}
+                  readOnly
+                />
+                <br />
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={avgTaste}
+                  precision={0.5}
+                  readOnly
+                />
+                <br />
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={avgVibe}
+                  precision={0.5}
+                  readOnly
+                />
+                <br />
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={avgKind}
+                  precision={0.5}
+                  readOnly
+                />
+                <br />
+              </StoreRatingStars>
+            </StoreRatingContainer>
+          </StoreInfoContainer>
+          <StoreLeftMenuTitle>{store.storeName} 지도</StoreLeftMenuTitle>
+          <BrandMapContainer>
+            <StoreDetailMap />
+          </BrandMapContainer>
+          <StoreLeftMenuTitle>{store.storeName} 메뉴</StoreLeftMenuTitle>
+          <BrandMenuContainer>
+            <StoreDetailMenu />
+          </BrandMenuContainer>
+        </StoreDetailLeft>
 
-      <StoreDetailRight>
-        <StoreReservationContainer>
-          <StoreDetailReservation />
-        </StoreReservationContainer>
-      </StoreDetailRight>
-    </Container>
+        <StoreDetailRight>
+          <StoreReservationContainer>
+            <StoreDetailReservation />
+          </StoreReservationContainer>
+        </StoreDetailRight>
+      </Container>
     </>
   );
 };

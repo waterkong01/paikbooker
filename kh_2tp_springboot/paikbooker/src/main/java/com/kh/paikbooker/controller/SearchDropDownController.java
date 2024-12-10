@@ -1,6 +1,6 @@
 package com.kh.paikbooker.controller;
 
-import com.kh.paikbooker.service.SearchDropDownSERVICE;
+import com.kh.paikbooker.service.SearchDropDownService;
 import com.kh.paikbooker.vo.StoreVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.Map;
 @RequestMapping("/stores") //  RESTful API 설계에서 클라이언트 요청의 URL과 컨트롤러의 처리 메서드를 연결하는 역할
 @RequiredArgsConstructor // final 또는 @NonNull 필드만 초기화하는 생성자를 자동 생성.
 public class SearchDropDownController {
-    private final SearchDropDownSERVICE searchDropDownService;
+    private final SearchDropDownService searchDropDownService;
 
 
     // 매장 검색 API

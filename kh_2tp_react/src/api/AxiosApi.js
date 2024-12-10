@@ -52,8 +52,39 @@ const AxiosApi = {
   getRatingResults: async (storeNo) => {
     const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores/${storeNo}/rating`);
     return response.data;
-  }
+  },
 
+  // 전체 예약 조회
+  reservationList: async () => {
+    return await axios.get(PAIKBOOKER_DOMAIN + "/reservation");
+  }, 
+
+  // 전체 리뷰 조회
+  reviewList: async () => {
+    return await axios.get(PAIKBOOKER_DOMAIN + "/auth");
+  },
+
+  // 리뷰 추가
+  reviewInsert: async (reviewData) => {
+    return await axios.post(PAIKBOOKER_DOMAIN + `/auth/add`, reviewData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+
+  // 리뷰 수정
+  reviewUpdate: async (reviewData) => {
+    return await axios.post(PAIKBOOKER_DOMAIN + `/auth/edit`, reviewData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  },
+  // 리뷰 삭제
+  reviewDelete: async (rvNo) => {
+    return await axios.delete(PAIKBOOKER_DOMAIN + `/auth/delete/${rvNo}`);
+  },
 
 };
 
