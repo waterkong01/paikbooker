@@ -23,7 +23,7 @@ public class SearchDropDownDAO {
     public List<StoreVO> searchData(String region, String brandName, String reservationTime) {
         StringBuilder sql = new StringBuilder(
                 "SELECT s.STORE_NAME, s.STORE_NO, s.STORE_PHONE, s.STORE_ADDR, s.STORE_MAP, " +
-                        "b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG, " +
+                        "b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG1, b.BRAND_IMG2," +
                         "rv.AVERAGE_RATING, res.R_TIME " +
                         "FROM STORE_TB s " +
                         "JOIN BRAND_TB b ON s.BRAND_NAME = b.BRAND_NAME " +
@@ -104,7 +104,8 @@ public class SearchDropDownDAO {
             brand.setBrandName(rs.getString("BRAND_NAME"));
             brand.setBrandFood(rs.getString("BRAND_FOOD"));
             brand.setBrandLogo2(rs.getString("BRAND_LOGO2"));
-            brand.setBrandImg(rs.getString("BRAND_IMG"));
+            brand.setBrandImg1(rs.getString("BRAND_IMG1"));
+            brand.setBrandImg1(rs.getString("BRAND_IMG2"));
             store.setBrandVO(brand); // StoreVO의 brandVO 필드에 브랜드 정보 추가
 
             // 조인으로 리뷰평균 가져오는 컬럼

@@ -23,7 +23,8 @@ public class StoreVO {
     private String brandLogo1;
     private String brandLogo2;
     private String brandMarker;
-    private String brandImg;
+    private String brandImg1;
+    private String brandImg2;
 
     private BrandVO brandVO;   // BrandVO 객체를 추가
     private ReviewVO reviewVO; // ReviewVO 객체를 추가

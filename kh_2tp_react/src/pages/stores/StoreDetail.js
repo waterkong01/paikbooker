@@ -306,7 +306,7 @@ const StoreDetail = () => {
       <Container>
         <StoreDetailLeft>
           <BrandImgContainer>
-            <BrandImage src={store.brandImg} />
+            <BrandImage src={store.brandImg2} />
           </BrandImgContainer>
           <StoreInfoContainer>
             <StoreAddrAndPhoneContainer>

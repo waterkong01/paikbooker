@@ -28,9 +28,9 @@ public class AuthController {
 
     // 아이디 중복 체크
     @GetMapping("/idCheck/{userId}")
-    public ResponseEntity<Boolean> idCheck(@PathVariable String user_id) {
-        log.info("아이디 중복 확인 요청: {}", user_id);
-        boolean idCheck = userDao.idCheck(user_id);
+    public ResponseEntity<Boolean> idCheck(@PathVariable String userId) {
+        log.info("아이디 중복 확인 요청: {}", userId);
+        boolean idCheck = userDao.idCheck(userId);
         return ResponseEntity.ok(!idCheck); // 중복일 경우 false 반환
     }
 

@@ -297,7 +297,7 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                     <div
                       className="storeBoxUp"
                       style={{
-                        backgroundImage: `url(${brandData.brand.brandImg})`,
+                        backgroundImage: `url(${brandData.brand.brandImg1})`,
                       }}
                     ></div>
                     <div className="storeBoxDown">
