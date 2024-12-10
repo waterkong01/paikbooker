@@ -76,6 +76,28 @@ const AxiosApi = {
     );
   },
 
+  // 메인 화면 가져오기
+  getCategories: async () => {
+    const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores/categories`);
+    return response.data;
+  },
+
+  fetchStores: async (region, brandName, reservationTime) => {
+    try {
+      const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores/search`, {
+        params: {
+          region: region,
+          brandName: brandName,
+          reservationTime: reservationTime,
+        },
+      });
+      return response.data; // 검색된 매장 데이터 반환
+    } catch (error) {
+      console.error("매장 검색 실패:", error);
+      throw error; // 에러는 상위 컴포넌트에서 처리
+    }
+  },
+
   // 매장) 전체 매장 조회 (StoreList)
   getStoreList: async () => {
     const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores`);
@@ -160,6 +182,9 @@ const AxiosApi = {
   reviewDelete: async (rvNo) => {
     return await axios.delete(PAIKBOOKER_DOMAIN + `/auth/delete/${rvNo}`);
   },
+
+
+
 };
 
 export default AxiosApi;

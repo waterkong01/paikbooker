@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import AxiosApi from "../../api/AxiosApi";
 
 const Container =styled.div`
   display: flex;
@@ -68,13 +68,14 @@ const StoreSearch = ({ getDataFromServerAndUpdateStoreList }) => {
   const [brandNameValue, setBrandNameValue] = useState("");
   const [reservationTimeValue, setReservationTimeValue] = useState("");
 
+  // 메인 화면 가져오기
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const rsp = await axios.get("http://localhost:8111/stores/categories");
+        const response = await AxiosApi.getCategories();
         setCategories({
-          region: rsp.data.region || [],
-          brandName: rsp.data.brandName || [],
+          region: response.region || [],
+          brandName: response.brandName || [],
         });
       } catch (error) {
         console.error("카테고리 목록 가져오기 실패:", error);
@@ -83,6 +84,7 @@ const StoreSearch = ({ getDataFromServerAndUpdateStoreList }) => {
     fetchCategories();
   }, []);
 
+  // NavBar 예약 시간 선택
   const reservationTimes = Array.from({ length: 24 }, (_, index) => {
     return `${index + 1}:00`; 
   });
