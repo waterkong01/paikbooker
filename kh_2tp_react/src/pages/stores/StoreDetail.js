@@ -218,7 +218,8 @@ const StoreDetailRight = styled.div`
   justify-content: center;
   align-items: left;
   position: fixed;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const StoreReservationContainer = styled.div`
