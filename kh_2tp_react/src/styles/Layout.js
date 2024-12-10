@@ -3,10 +3,9 @@ import styled from "styled-components";
 import NavBar1 from "../components/NavBar1";
 import NavBar2 from "../components/NavBar2";
 import NavBar3 from "../components/NavBar3";
-import Main from "../pages/Main";
 import HomeItem from "../components/HomeItems";
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import AxiosApi from "../api/AxiosApi";
 
 const StyledHeader = styled.header`
   width: 100%;
@@ -28,38 +27,30 @@ const Layout = () => {
   const [dataReceivedAfterSearch, setDataReceivedAfterSearch] = useState([]); // 검색된 매장들
 
   // 컴포넌트가 처음 로드될 때, 기본적으로 모든 매장을 가져오는 검색
-  useEffect(() => {
-    getDataFromServerAndUpdateStoreList(region, brandName, reservationTime);
-  }, []); // 빈 배열을 의존성으로 설정하면 컴포넌트가 처음 렌더링될 때만 호출됨
-
   const getDataFromServerAndUpdateStoreList = useCallback(
     async (region, brandName, reservationTime) => {
       try {
         // console.log("검색 조건:", { region, brandName, reservationTime }); // 파라미터 확인
         // API 호출을 통해 조건에 맞는 데이터를 가져옵니다.
-        const response = await axios.get(
-          "http://localhost:8111/stores/search",
-          {
-            // BackEnd에 넘길 검색 조건들
-            params: {
-              region: region,
-              brandName: brandName,
-              reservationTime: reservationTime,
-            },
-          }
-        );
+        const response = await AxiosApi.navBarSearching(region, brandName, reservationTime);
+
         // if (response.data && response.data.length > 0) {
         //   console.log("검색된 매장들:", response.data);
         // } else {
         //   console.log("검색된 매장이 없습니다.");
         // }
-        setDataReceivedAfterSearch(response.data); // 검색된 매장들 상태 업데이트
+        setDataReceivedAfterSearch(response); // 검색된 매장들 상태 업데이트
       } catch (error) {
         console.error("검색 실패:", error);
       }
     },
     []
   );
+
+  useEffect(() => {
+    getDataFromServerAndUpdateStoreList(region, brandName, reservationTime);
+  }, [getDataFromServerAndUpdateStoreList, region, brandName, reservationTime]);
+
 
   return (
     <>

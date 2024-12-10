@@ -82,7 +82,8 @@ const AxiosApi = {
     return response.data;
   },
 
-  fetchStores: async (region, brandName, reservationTime) => {
+  // NavBar 검색
+  navBarSearching: async (region, brandName, reservationTime) => {
     try {
       const response = await axios.get(PAIKBOOKER_DOMAIN + `/stores/search`, {
         params: {
