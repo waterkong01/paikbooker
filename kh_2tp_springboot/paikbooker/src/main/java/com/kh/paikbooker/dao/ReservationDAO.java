@@ -42,7 +42,8 @@ public class ReservationDAO {
                     rs.getInt("store_no"),
                     rs.getString("store_name"),
                     rs.getString("store_phone"),
-                    rs.getString("brand_name")
+                    rs.getString("brand_name"),
+                    rs.getBoolean("has_review")
             );
         }
     }
