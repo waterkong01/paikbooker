@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import AxiosApi from "../../api/AxiosApi";
+import { useNavigate } from "react-router-dom";
 
 const Container =styled.div`
   display: flex;
@@ -67,6 +68,7 @@ const StoreSearch = ({ getDataFromServerAndUpdateStoreList }) => {
   const [regionValue, setRegionValue] = useState("");
   const [brandNameValue, setBrandNameValue] = useState("");
   const [reservationTimeValue, setReservationTimeValue] = useState("");
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   // 메인 화면 가져오기
   useEffect(() => {
@@ -91,6 +93,7 @@ const StoreSearch = ({ getDataFromServerAndUpdateStoreList }) => {
 
   const handleSearchButtonClick = () => {
     getDataFromServerAndUpdateStoreList(regionValue, brandNameValue, reservationTimeValue);
+    navigate("/"); // main 화면으로 이동
   };
 
   return (

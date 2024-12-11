@@ -184,6 +184,10 @@ const AxiosApi = {
     return await axios.delete(PAIKBOOKER_DOMAIN + `/auth/delete/${rvNo}`);
   },
 
+  // 브랜드 페이지 추가
+  getBrandDetails: (brandNo) => {
+    return axios.get(PAIKBOOKER_DOMAIN + `/brand/${brandNo}`);
+  },
 
 
 };

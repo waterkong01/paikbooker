@@ -81,4 +81,45 @@ public class SearchDropDownService {
         }
         return ""; // 형식이 맞지 않을 경우 빈 문자열 반환
     }
+
+
+    //----------------------------------------------------------------------------------------
+
+    // 브랜드 번호로 매장 검색
+    public List<StoreVO> getStoresByBrandNo(int brandNo) {
+        // DAO 메서드를 호출하여 매장 리스트 가져오기
+        List<StoreVO> stores = searchDropDownDAO.brandStoresByBrandNo(brandNo);
+
+        // 매장 주소를 "~~구, ~~구" 형태로 변환
+        for (StoreVO store : stores) {
+            String address = store.getStoreAddr();
+            if (address != null) {
+                String formattedAddress = formatAddress(address);
+                store.setStoreAddr(formattedAddress); // 변환된 주소로 설정
+            }
+        }
+
+        return stores;
+    }
+
+    private String formatAddress(String address) {
+        // 예: "서울특별시 강남구 테헤란로 123" -> "강남구"
+        // "서울특별시" 이후 첫 번째 "구"까지의 부분을 추출
+        String formattedAddress = "";
+
+        // "구"를 기준으로 주소에서 "구" 부분을 추출
+        String[] addressParts = address.split(" ");
+        for (String part : addressParts) {
+            if (part.contains("구")) {
+                formattedAddress += part + ", ";
+            }
+        }
+
+        // 마지막 쉼표와 공백 제거
+        if (formattedAddress.endsWith(", ")) {
+            formattedAddress = formattedAddress.substring(0, formattedAddress.length() - 2);
+        }
+
+        return formattedAddress;
+    }
 }

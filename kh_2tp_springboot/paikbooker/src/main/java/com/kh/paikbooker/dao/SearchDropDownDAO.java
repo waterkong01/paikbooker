@@ -20,10 +20,26 @@ import java.util.Map;
 public class SearchDropDownDAO {
     private final JdbcTemplate jdbcTemplate;
 
+    public List<StoreVO> brandStoresByBrandNo(int brandNo) {
+        String sql = "SELECT s.STORE_NAME, s.STORE_NO, s.STORE_PHONE, s.STORE_ADDR, s.STORE_MAP, " +
+                "b.BRAND_NO, b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG1, b.BRAND_IMG2, " +
+                "AVG(rv.AVERAGE_RATING) AS AVERAGE_RATING, MAX(res.R_TIME) AS R_TIME " +
+                "FROM STORE_TB s " +
+                "JOIN BRAND_TB b ON s.BRAND_NAME = b.BRAND_NAME " +
+                "LEFT JOIN V_STORE_AVG rv ON S.STORE_NAME = rv.STORE_NAME " +
+                "LEFT JOIN RESERVATION_TB res ON s.STORE_NO = res.STORE_NO " +
+                "WHERE b.BRAND_NO = ? " +
+                "GROUP BY s.STORE_NAME, s.STORE_NO, s.STORE_PHONE, s.STORE_ADDR, s.STORE_MAP, " +
+                "b.BRAND_NO, b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG1, b.BRAND_IMG2";
+
+        // JdbcTemplate를 사용하여 쿼리 실행
+        return jdbcTemplate.query(sql, new Object[]{brandNo}, new StoreRowMapper());
+    }
+
     public List<StoreVO> searchData(String region, String brandName, String reservationTime) {
         StringBuilder sql = new StringBuilder(
                 "SELECT s.STORE_NAME, s.STORE_NO, s.STORE_PHONE, s.STORE_ADDR, s.STORE_MAP, " +
-                        "b.BRAND_NAME, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG1, b.BRAND_IMG2," +
+                        "b.BRAND_NAME, b.BRAND_NO, b.BRAND_FOOD, b.BRAND_LOGO2, b.BRAND_IMG1, b.BRAND_IMG2," +
                         "rv.AVERAGE_RATING, res.R_TIME " +
                         "FROM STORE_TB s " +
                         "JOIN BRAND_TB b ON s.BRAND_NAME = b.BRAND_NAME " +
@@ -101,6 +117,7 @@ public class SearchDropDownDAO {
 
             // BRAND_TB 테이블에서 가져온 컬럼
             BrandVO brand = new BrandVO();
+            brand.setBrandNo(rs.getInt("BRAND_NO"));
             brand.setBrandName(rs.getString("BRAND_NAME"));
             brand.setBrandFood(rs.getString("BRAND_FOOD"));
             brand.setBrandLogo2(rs.getString("BRAND_LOGO2"));

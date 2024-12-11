@@ -375,7 +375,7 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
       </SortBy>
       <HomeItemBlock>
         <Background>
-          {sortedStores.map((brandData) => (
+          {sortedStores.map((brandData, index) => (
             <BrandContainer key={brandData.brand.brandName}>
               <BrandMain>
                 <BrandLogo
@@ -389,15 +389,17 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                 <ArrowButton className="left-arrow" onClick={scrollLeft}>
                   &lt;
                 </ArrowButton>
-                <Stores>
-                  {brandData.stores.map((store, index) => (
+                <Stores ref={setRef(index)}>
+                {" "}
+                {/* 각 store에 고유 ref 할당 */}
+                
+                  {brandData.stores.map((store) => (
                     <StyledLink
                       to={`/stores/${store.storeNo}`}
                       key={store.storeNo}
                     >
-                      <EachStore ref={setRef(index)}>
-                        {" "}
-                        {/* 각 store에 고유 ref 할당 */}
+                      <EachStore>
+
                         <EachImage
                           style={{
                             backgroundImage: `url(${brandData.brand.brandImg1})`,

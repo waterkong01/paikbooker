@@ -17,6 +17,7 @@ import { useState } from "react";
 import Member from "./pages/member/Member";
 import MemberInfo from "./pages/member/MemberInfo";
 import UserStore from "./context/UserStore";
+import BrandWindow from "./pages/brand/BrandWindow";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
@@ -44,6 +45,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/Member" element={<Member />} />
               <Route path="/member/MemberInfo" element={<MemberInfo />} />
+              <Route path="/brand/:brandNo" element={<BrandWindow />} />
             </Route>
           </Routes>
           {/* 회원가입 모달 */}

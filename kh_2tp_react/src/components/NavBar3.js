@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { useRef, useState, useEffect } from "react";
 import AxiosApi from "../api/AxiosApi";
+import { useNavigate } from "react-router-dom";
 
 const Background = styled.div`
   width: 100%;
@@ -30,7 +31,7 @@ const BrandContainerWrapper = styled.div`
 
 const ArrowButton = styled.button`
   position: absolute;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   cursor: pointer;
@@ -99,6 +100,7 @@ const EachBrand = styled.div`
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease-in-out;
+  cursor: pointer;
 `;
 
 const EachImage = styled.div`
@@ -124,6 +126,7 @@ const EachText = styled.div`
 const NavBar3 = () => {
   const [brandLogos, setBrandLogos] = useState([]);
   const containerRef = useRef(null);
+  const navigate = useNavigate(); // 페이지 이동을 위한 훅
 
   // 브랜드 로고 가져오기
   useEffect(() => {
@@ -155,7 +158,8 @@ const NavBar3 = () => {
     if (containerRef.current) {
       containerRef.current.scrollBy({
         left: scrollAmount,
-      }); console.log(containerRef.current);
+      });
+      console.log(containerRef.current);
     }
   };
 
@@ -170,7 +174,10 @@ const NavBar3 = () => {
 
           <BrandContainer ref={containerRef}>
             {brandLogos.map((brandLogo, index) => (
-              <EachBrand key={index}>
+              <EachBrand
+                key={index}
+                onClick={() => navigate(`/brand/${brandLogo.brandNo}`)}
+              >
                 <EachImage>
                   <img
                     src={brandLogo.brandLogo1}

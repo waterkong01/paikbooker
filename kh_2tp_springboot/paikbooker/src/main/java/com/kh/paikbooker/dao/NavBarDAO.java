@@ -15,7 +15,7 @@ public class NavBarDAO {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private static final String SELECT_BRAND_LOGO1 = "SELECT BRAND_NAME, BRAND_LOGO1 FROM BRAND_TB";
+    private static final String SELECT_BRAND_LOGO1 = "SELECT BRAND_NAME, BRAND_NO, BRAND_LOGO1 FROM BRAND_TB";
 
     // 조회) 전체 브랜드 로고 조회
     public List<BrandVO> getBrandLogos() {
