@@ -80,10 +80,10 @@ public class StoreController {
     @PostMapping("/{storeNo}/reservations")
     public ResponseEntity<?> addReservation(
             @RequestBody Map<String, Object> submitData) {
-            ReservationVO reservationVO = new ReservationVO();
+        ReservationVO reservationVO = new ReservationVO();
         try {
-            reservationVO.setRTime((String) submitData.get("rTime"));
-            reservationVO.setRPersonCnt((Integer) submitData.get("rPersonCnt"));
+            reservationVO.setrTime((String) submitData.get("rTime"));
+            reservationVO.setrPersonCnt((Integer) submitData.get("rPersonCnt"));
             String userId = "testid01"; // 임시
             reservationVO.setUserId(userId);
             reservationVO.setStoreNo((Integer) submitData.get("storeNo"));

@@ -93,8 +93,8 @@ public class StoreDAO {
     // 예약) 새로운 예약 생성
     public void addReservation(ReservationVO reservationVO, int storeNo) {
         jdbcTemplate.update(INSERT_RESERVATIONS,
-                reservationVO.getRTime(), // R_TIME
-                reservationVO.getRPersonCnt(), // R_PERSON_CNT
+                reservationVO.getrTime(), // R_TIME
+                reservationVO.getrPersonCnt(), // R_PERSON_CNT
                 reservationVO.getUserId(), // USER_ID
                 reservationVO.getStoreNo(), // STORE_NO
                 reservationVO.getUserId(), // USER_ID (WHERE)

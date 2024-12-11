@@ -140,7 +140,7 @@ const BrandMain = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   box-sizing: border-box;
-  background-color: #e1e1e1;
+  background-color: #e3e3e3;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -182,26 +182,29 @@ const Stores = styled.div`
 
 const EachStore = styled.div`
   box-sizing: border-box;
-  width: 200px;
-  height: 145px;
+  width: 250px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   border-radius: 10px;
+  background-color: #e3e3e3;
 `;
 
 const EachImage = styled.div`
   box-sizing: border-box;
-  width: 100%;
-  height: 100px;
+  width: 250px;
+  height: 140px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-color: #f1f1f1;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 const EachTextContainer = styled.div`
   box-sizing: border-box;
+  padding-left: 10px;
+  padding-bottom: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -236,9 +239,9 @@ const ArrowButton = styled.button`
   position: absolute;
   width: 50px;
   height: 145px;
-  background-color: #e1e1e1;
+  background-color: #e3e3e3;
   color: black;
-  border: 1px solid #bbb;
+  border: none;
   cursor: pointer;
   z-index: 10;
   padding: 10px;
@@ -380,16 +383,23 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
         <Background>
           {sortedStores.map((brandData, index) => (
             <BrandContainer key={brandData.brand.brandName}>
-              <BrandMain>
-                <BrandLogo
-                  style={{
-                    backgroundImage: `url(${brandData.brand.brandLogo2})`,
-                  }}
-                ></BrandLogo>
-              </BrandMain>
-
+              <StyledLink
+                to={`/brand/${brandData.brand.brandNo}`}
+                key={brandData.brand.brandNo}
+              >
+                <BrandMain>
+                  <BrandLogo
+                    style={{
+                      backgroundImage: `url(${brandData.brand.brandLogo2})`,
+                    }}
+                  ></BrandLogo>
+                </BrandMain>
+              </StyledLink>
               <StoresContainer>
-                <ArrowButton className="left-arrow" onClick={() => scrollLeft(index)}>
+                <ArrowButton
+                  className="left-arrow"
+                  onClick={() => scrollLeft(index)}
+                >
                   &lt;
                 </ArrowButton>
                 <Stores ref={setRef(index)}>
@@ -430,7 +440,10 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                     </StyledLink>
                   ))}
                 </Stores>
-                <ArrowButton className="right-arrow" onClick={() => scrollRight(index)}>
+                <ArrowButton
+                  className="right-arrow"
+                  onClick={() => scrollRight(index)}
+                >
                   &gt;
                 </ArrowButton>
               </StoresContainer>

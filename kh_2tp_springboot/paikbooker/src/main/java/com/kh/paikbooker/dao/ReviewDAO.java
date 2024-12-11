@@ -49,13 +49,13 @@ public class ReviewDAO {
     public boolean insertReview(ReviewVO vo) {
         try {
             // r_no 찾기
-            Integer rNo = getReservationRNo(vo.getUserId(), vo.getStoreName(), vo.getRTime());
+            Integer rNo = getReservationRNo(vo.getUserId(), vo.getStoreName(), vo.getrTime());
             if (rNo == null) {
                 log.error("예약 번호를 찾을 수 없습니다. 리뷰 추가를 실패합니다.");
                 return false; // 예약 번호가 없으면 리뷰를 추가할 수 없습니다.
             }
             // r_submit_time 찾기
-            Date rSubmitTime = getReservationRSubmitTime(vo.getUserId(), vo.getStoreName(), vo.getRTime());
+            Date rSubmitTime = getReservationRSubmitTime(vo.getUserId(), vo.getStoreName(), vo.getrTime());
             if (rSubmitTime == null) {
                 log.error("예약일 찾을 수 없습니다. 리뷰 추가를 실패합니다.");
                 return false; // 예약일이 없으면 리뷰를 추가할 수 없습니다.
@@ -65,7 +65,7 @@ public class ReviewDAO {
                     REVIEW_INSERT,
                     vo.getUserId(),
                     vo.getStoreName(),
-                    vo.getRTime(),
+                    vo.getrTime(),
                     rSubmitTime,
                     rNo,
                     vo.getRvPrice(),
@@ -83,7 +83,7 @@ public class ReviewDAO {
     // 리뷰 수정
     public boolean updateReview(ReviewVO vo) {
         try {
-            Integer rvNo = getReviewRvNo(vo.getUserId(), vo.getStoreName(), vo.getRTime());
+            Integer rvNo = getReviewRvNo(vo.getUserId(), vo.getStoreName(), vo.getrTime());
             if (rvNo == null) {
                 log.error("리뷰 번호를 찾을 수 없습니다. 리뷰 수정을 실패합니다.");
                 return false; // 리뷰 번호가 없으면 리뷰를 수정할 수 없습니다.

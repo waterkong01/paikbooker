@@ -22,37 +22,37 @@ public class ReservationVO {
     private String storeName;
     private String storePhone;
     private String brandName;
-    private boolean hasReview; // 리뷰 존재 여부 추가
+    private boolean hasReview;
 
-    public int getRNo() {
+    public int getrNo() {
         return rNo;
     }
 
-    public void setRNo(int rNo) {
+    public void setrNo(int rNo) {
         this.rNo = rNo;
     }
 
-    public String getRTime() {
+    public String getrTime() {
         return rTime;
     }
 
-    public void setRTime(String rTime) {
+    public void setrTime(String rTime) {
         this.rTime = rTime;
     }
 
-    public int getRPersonCnt() {
+    public int getrPersonCnt() {
         return rPersonCnt;
     }
 
-    public void setRPersonCnt(int rPersonCnt) {
+    public void setrPersonCnt(int rPersonCnt) {
         this.rPersonCnt = rPersonCnt;
     }
 
-    public Date getRSubmitTime() {
+    public Date getrSubmitTime() {
         return rSubmitTime;
     }
 
-    public void setRSubmitTime(Date rSubmitTime) {
+    public void setrSubmitTime(Date rSubmitTime) {
         this.rSubmitTime = rSubmitTime;
     }
 
