@@ -17,35 +17,78 @@ const Background = styled.div`
   background-color: #fff;
 `;
 
-const BrandContainer = styled.div`
-  width: 80%;
+const BrandContainerWrapper = styled.div`
+  width: 1280px;
   margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+`;
+
+const ArrowButton = styled.button`
+  position: absolute;
+  background-color: rgba(0, 0, 0, .5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  padding: 10px;
+  font-size: 0.5em;
+  line-height: 1.2em;
+  border-radius: 30px;
+  &.left-arrow {
+    left: 0;
+  }
+  &.right-arrow {
+    right: 0;
+  }
+`;
+
+const FadeLeft = styled.div`
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+  z-index: 5;
+  margin-left: 30px;
+`;
+
+const FadeRight = styled.div`
+  top: 0;
+  right: 0;
+  position: absolute;
+  width: 50px;
+  height: 100%;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+  z-index: 5;
+  margin-right: 30px;
+`;
+
+const BrandContainer = styled.div`
+  width: 1280px;
+  margin: 0 30px;
   display: flex;
   align-items: center;
   gap: 12.5px;
   overflow-x: hidden;
   white-space: nowrap;
   scroll-behavior: smooth;
-`;
-
-const ArrowButton = styled.button`
-  position: fixed;
-  top: calc(170px + 45px); /* Background의 높이와 절반 계산 */
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  padding: 10px;
-
-  &.left-arrow {
-    left: 10px;
-  }
-
-  &.right-arrow {
-    right: 10px;
-  }
+  position: relative;
 `;
 
 const EachBrand = styled.div`
@@ -112,29 +155,38 @@ const NavBar3 = () => {
     if (containerRef.current) {
       containerRef.current.scrollBy({
         left: scrollAmount,
-      });
+      }); console.log(containerRef.current);
     }
   };
 
   return (
     <>
       <Background>
-        <ArrowButton className="left-arrow" onClick={scrollLeft}>
-          ←
-        </ArrowButton>
-        <BrandContainer ref={containerRef}>
-          {brandLogos.map((brandLogo, index) => (
-            <EachBrand key={index}>
-              <EachImage>
-                <img src={brandLogo.brandLogo1} alt={`${brandLogo.brandName}`} />
-              </EachImage>
-              <EachText>{brandLogo.brandName}</EachText>
-            </EachBrand>
-          ))}
-        </BrandContainer>
-        <ArrowButton className="right-arrow" onClick={scrollRight}>
-          →
-        </ArrowButton>
+        <BrandContainerWrapper>
+          <ArrowButton className="left-arrow" onClick={scrollLeft}>
+            ◀
+          </ArrowButton>
+          <FadeLeft />
+
+          <BrandContainer ref={containerRef}>
+            {brandLogos.map((brandLogo, index) => (
+              <EachBrand key={index}>
+                <EachImage>
+                  <img
+                    src={brandLogo.brandLogo1}
+                    alt={`${brandLogo.brandName}`}
+                  />
+                </EachImage>
+                <EachText>{brandLogo.brandName}</EachText>
+              </EachBrand>
+            ))}
+          </BrandContainer>
+
+          <FadeRight />
+          <ArrowButton className="right-arrow" onClick={scrollRight}>
+            ▶
+          </ArrowButton>
+        </BrandContainerWrapper>
       </Background>
     </>
   );

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 
 // 두 위도-경도 좌표 간의 거리를 계산하는 Haversine 공식
@@ -106,86 +106,124 @@ const SortBy = styled.div`
 `;
 
 const HomeItemBlock = styled.div`
-  .container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .brandWrapper {
-    display: flex;
-    align-items: center;
-    gap: 50px;
-  }
-
-  .brand {
-    width: 383px;
-    height: 266px;
-    margin-top: 20px;
-    margin-left: 120px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-    background-color: #f1f1f1;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .brandLogo {
-    width: 150px;
-    height: 100px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #f1f1f1;
-    border-radius: 10px;
-  }
-
-  .stores {
-    box-sizing: border-box;
-    display: flex;
-    gap: 50px;
-  }
-
-  .storeBox {
-    width: 383px;
-    height: 276px;
-    margin-top: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .storeBoxUp {
-    width: 100%;
-    height: 215px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: #f1f1f1;
-    border-radius: 30px;
-  }
-
-  .storeBoxDown {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    font-size: 14px;
-  }
-
-  .boxDTextUp {
-    padding-top: 10px;
-    font-size: 16px;
-  }
-
-  .boxDTextDown {
-    font-size: 16px;
-  }
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #fff;
 `;
 
-// Link에 대한 스타일을 적용
+const Background = styled.div`
+  width: 1280px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+`;
+
+const BrandContainer = styled.div`
+  box-sizing: border-box;
+  width: 1280px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+`;
+
+const BrandMain = styled.div`
+  box-sizing: border-box;
+  width: 200px;
+  height: 145px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #e1e1e1;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+const BrandLogo = styled.div`
+  box-sizing: border-box;
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
+const StoresContainer = styled.div`
+  width: 1060px;
+  padding-left: 70px;
+  padding-right: 70px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+`;
+
+const Stores = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  gap: 20px;
+  width: 920px;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  position: relative;
+`;
+
+const EachStore = styled.div`
+  box-sizing: border-box;
+  width: 200px;
+  height: 145px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+`;
+
+const EachImage = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+`;
+
+const EachTextContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+`;
+
+const EachText1 = styled.div`
+  box-sizing: border-box;
+  padding-top: 10px;
+  height: 29px;
+  font-size: 0.8em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: no;
+  overflow: hidden;
+`;
+
+const EachText2 = styled.div`
+  box-sizing: border-box;
+  font-size: 0.7em;
+`;
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #000;
@@ -193,9 +231,37 @@ const StyledLink = styled(Link)`
   transition: color 0.3s;
 `;
 
+const ArrowButton = styled.button`
+  position: absolute;
+  width: 50px;
+  height: 145px;
+  background-color: #e1e1e1;
+  color: black;
+  border: 1px solid #bbb;
+  cursor: pointer;
+  z-index: 10;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 10px;
+  &.left-arrow {
+    left: 0;
+  }
+  &.right-arrow {
+    right: 0;
+  }
+`;
+
 const HomeItem = ({ dataReceivedAfterSearch }) => {
   const [sortType, setSortType] = useState("name");
   const [sortByDistance, setSortByDistance] = useState(false);
+
+  // containerRef를 배열로 설정
+  const containerRefs = useRef([]);
+
+  // setRef 함수: 각 store 항목에 ref를 동적으로 할당
+  const setRef = (index) => (element) => {
+    containerRefs.current[index] = element; // 해당 인덱스에 DOM 요소 할당
+  };
 
   const referenceLat = 37.500666760224306;
   const referenceLon = 127.03646889929213;
@@ -256,6 +322,26 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
     return <div>No stores available</div>;
   }
 
+  const scrollLeft = () => {
+    if (containerRefs.current[0]) {
+      containerRefs.current[0].scrollBy({
+        left: -300,
+        behavior: "smooth",
+      });
+      console.log(containerRefs.current[0]);
+    }
+  };
+
+  const scrollRight = () => {
+    if (containerRefs.current[0]) {
+      containerRefs.current[0].scrollBy({
+        left: 300,
+        behavior: "smooth",
+      });
+      console.log(containerRefs.current[0]);
+    }
+  };
+
   return (
     <>
       <SortBy>
@@ -288,54 +374,66 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
         </button>
       </SortBy>
       <HomeItemBlock>
-        <div className="container">
+        <Background>
           {sortedStores.map((brandData) => (
-            <div key={brandData.brand.brandName} className="brandWrapper">
-              <div className="brand">
-                <div
-                  className="brandLogo"
+            <BrandContainer key={brandData.brand.brandName}>
+              <BrandMain>
+                <BrandLogo
                   style={{
                     backgroundImage: `url(${brandData.brand.brandLogo2})`,
                   }}
-                ></div>
-              </div>
+                ></BrandLogo>
+              </BrandMain>
 
-              <div className="stores">
-                {brandData.stores.map((store) => (
-                  <StyledLink to={`/stores/${store.storeNo}`}>
-                  <div key={store.storeNo} className="storeBox">
-                    <div
-                      className="storeBoxUp"
-                      style={{
-                        backgroundImage: `url(${brandData.brand.brandImg1})`,
-                      }}
-                    ></div>
-                    <div className="storeBoxDown">
-                      <div className="boxDTextUp">{store.storeName}</div>
-                      <div className="boxDTextDown">
-                        <p style={{ color: "RED", display: "inline" }}>★ </p>
-                        <p style={{ display: "inline" }}>
-                          {store.avgRatingVO.averageRating}
-                        </p>
-                        <p
+              <StoresContainer>
+                <ArrowButton className="left-arrow" onClick={scrollLeft}>
+                  &lt;
+                </ArrowButton>
+                <Stores>
+                  {brandData.stores.map((store, index) => (
+                    <StyledLink
+                      to={`/stores/${store.storeNo}`}
+                      key={store.storeNo}
+                    >
+                      <EachStore ref={setRef(index)}>
+                        {" "}
+                        {/* 각 store에 고유 ref 할당 */}
+                        <EachImage
                           style={{
-                            color: "#a4a4a4",
-                            display: "inline",
-                            fontSize: "13px",
+                            backgroundImage: `url(${brandData.brand.brandImg1})`,
                           }}
-                        >
-                          {store.brandVO.brandFood}ㆍ{store.storeAddr}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </StyledLink>
-                ))}
-              </div>
-              
-            </div>
+                        ></EachImage>
+                        <EachTextContainer>
+                          <EachText1>{store.storeName}</EachText1>
+                          <EachText2>
+                            <p style={{ color: "RED", display: "inline" }}>
+                              ★{" "}
+                            </p>
+                            <p style={{ display: "inline" }}>
+                              {store.avgRatingVO.averageRating}
+                            </p>
+                            <p
+                              style={{
+                                color: "#a4a4a4",
+                                display: "inline",
+                                marginLeft: "5px",
+                              }}
+                            >
+                              {store.brandVO.brandFood}ㆍ{store.storeAddr}
+                            </p>
+                          </EachText2>
+                        </EachTextContainer>
+                      </EachStore>
+                    </StyledLink>
+                  ))}
+                </Stores>
+                <ArrowButton className="right-arrow" onClick={scrollRight}>
+                  &gt;
+                </ArrowButton>
+              </StoresContainer>
+            </BrandContainer>
           ))}
-        </div>
+        </Background>
       </HomeItemBlock>
     </>
   );

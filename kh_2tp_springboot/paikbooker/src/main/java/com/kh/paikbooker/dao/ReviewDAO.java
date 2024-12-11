@@ -163,7 +163,6 @@ public class ReviewDAO {
                     rs.getBigDecimal("rv_taste"),
                     rs.getBigDecimal("rv_vibe"),
                     rs.getBigDecimal("rv_kind")
-//                    rs.getBigDecimal("rv_Average")
             );
         }
     }
