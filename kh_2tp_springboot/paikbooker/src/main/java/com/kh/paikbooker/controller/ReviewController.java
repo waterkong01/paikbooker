@@ -33,6 +33,7 @@ public class ReviewController {
     @PostMapping("/add")
     public ResponseEntity<Boolean> insertReview(@RequestBody ReviewVO vo) {
 //        log.info("리뷰 : {}", vo);
+        System.out.println("받은 리뷰 데이터: " + vo);
         boolean isSuccess = reviewDao.insertReview(vo);
         return ResponseEntity.ok(isSuccess);
     }
@@ -40,6 +41,7 @@ public class ReviewController {
     @PostMapping("/edit")
     public ResponseEntity<Boolean> updateReview(@RequestBody ReviewVO vo) {
 //        log.info("작성자 ID : {}", vo);
+        System.out.println("받은 리뷰 수정 데이터: " + vo);
         boolean isSuccess = reviewDao.updateReview(vo);
         return ResponseEntity.ok(isSuccess);
     }

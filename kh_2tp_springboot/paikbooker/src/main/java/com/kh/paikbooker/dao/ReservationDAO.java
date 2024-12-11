@@ -17,7 +17,11 @@ import java.util.List;
 public class ReservationDAO {
     private final JdbcTemplate jdbcTemplate;
     // 예약 전체 불러오기
-    private static final String RESERVATION_QUERY = "SELECT * FROM RESERVATION_TB";
+//    private static final String RESERVATION_QUERY = "SELECT * FROM RESERVATION_TB";
+    private static final String RESERVATION_QUERY =
+            "SELECT r.*, " +
+                    "       CASE WHEN EXISTS (SELECT 1 FROM REVIEW_TB rv WHERE rv.r_no = r.r_no) THEN 1 ELSE 0 END AS has_review " +
+                    "FROM RESERVATION_TB r";
 
     // 예약 목록 조회
     public List<ReservationVO> reservationList() {
@@ -43,7 +47,7 @@ public class ReservationDAO {
                     rs.getString("store_name"),
                     rs.getString("store_phone"),
                     rs.getString("brand_name"),
-                    rs.getBoolean("has_review")
+                    rs.getInt("has_review") == 1 // hasReview 매핑
             );
         }
     }

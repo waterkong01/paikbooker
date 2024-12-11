@@ -3,32 +3,27 @@ import { Link } from "react-router-dom";
 import AxiosApi from "../../api/AxiosApi";
 import styled from "styled-components";
 import { Rating } from "@mui/material";
+import { ReviewContainer, StyledTable } from "../../components/ReviewComponent";
 
-const StyledTable = styled.table`
-    width: 90%;
-    margin: auto;
-    /* background-color: palegoldenrod; */
-    text-align: center;
-    border: 1px solid #000;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-    border-spacing: 15px;
-`
-export const ReviewContainer = styled.div`
-    margin: 100px auto;
-    width: 90%;
-`
 const ReviewLink = styled(Link)`
     text-decoration: none;
     color: #000;
+    &:active {
+        color: #FFF;
+    } 
 `
 export const ReviewButton = styled.button`
     height: 40px;
     aspect-ratio: 7 / 4;
-    border-radius: 5px;   
+    border-radius: 5px;
+    &:active {
+        background-color: #000;
+        color: #FFF;
+    } 
 `
 
 const ReviewList = () => {
-    const [reviews, setReviews] = useState("");
+    const [reviews, setReviews] = useState([]);
 
     useEffect (() => {
         const getReviews = async () => {
@@ -89,8 +84,8 @@ const ReviewList = () => {
                                 <td>{review.userId}</td>
                                 <td>{review.rvDate}</td>
                                 <td>{review.storeName}</td>
-                                <td>{review.rtime}</td>
-                                <td>{review.rno}</td>
+                                <td>{review.rTime}:00</td>
+                                <td>{review.rNo}</td>
                                 <td>
                                     <Rating
                                         name={`price-rating-${review.rvNo}`}
@@ -125,7 +120,7 @@ const ReviewList = () => {
                                 </td>
                                 <td>
                                     <ReviewButton>
-                                        <ReviewLink to={`/EditReview?userId=${review.userId}&storeName=${review.storeName}&rTime=${review.rTime}&rvPrice=${review.rvPrice}&rvTaste=${review.rvTaste}&rvVibe=${review.rvVibe}&rvKind=${review.rvKind}`} className="link_style">
+                                        <ReviewLink to={`/EditReview?userId=${review.userId}&storeName=${review.storeName}&rSubmitTime=${review.rSubmitTime}&rTime=${review.rTime}&rvPrice=${review.rvPrice}&rvTaste=${review.rvTaste}&rvVibe=${review.rvVibe}&rvKind=${review.rvKind}&rvContent=${review.rvContent}`} className="link_style">
                                             <span>리뷰 수정</span>
                                         </ReviewLink>
                                     </ReviewButton>

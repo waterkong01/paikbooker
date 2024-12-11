@@ -4,6 +4,7 @@ import com.kh.paikbooker.vo.ReviewVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,16 +20,16 @@ public class ReviewDAO {
     private static final String REVIEW_QUERY = "SELECT * FROM REVIEW_TB";
     // 리뷰 추가
     private static final String REVIEW_INSERT =
-            "INSERT INTO REVIEW_TB (rv_no, user_id, rv_date, store_name, r_time, r_submit_time, r_no, rv_price, rv_taste, rv_vibe, rv_kind) "
-                    + "VALUES (RV_NO_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO REVIEW_TB (rv_no, user_id, rv_date, store_name, r_time, r_submit_time, r_no, rv_price, rv_taste, rv_vibe, rv_kind, rv_content) "
+                    + "VALUES (RV_NO_SEQ.NEXTVAL, ?, SYSDATE, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     // 리뷰 수정
-    private static final String REVIEW_UPDATE = "UPDATE REVIEW_TB SET rv_price = ?, rv_taste = ?, rv_vibe = ?, rv_kind = ? WHERE rv_no = ?";
+    private static final String REVIEW_UPDATE = "UPDATE REVIEW_TB SET rv_price = ?, rv_taste = ?, rv_vibe = ?, rv_kind = ?, rv_content = ? WHERE rv_no = ?";
     // 리뷰 삭제
     private static final String REVIEW_DELETE = "DELETE FROM REVIEW_TB WHERE rv_no = ?";
     // RESERVATION_TB에서 r_submit_time 찾기
     private static final String R_SUBMIT_TIME_FIND_QUERY = "SELECT r_submit_time FROM RESERVATION_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
     // RESERVATION_TB에서 r_no 찾기
-    private static final String R_NO_FIND_QUERY = "SELECT R_NO FROM RESERVATION_TB WHERE USER_ID = ? AND STORE_NAME = ? AND R_TIME = ?";
+    private static final String R_NO_FIND_QUERY = "SELECT r_no FROM RESERVATION_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
     // REVIEW_TB에서 rv_no 찾기
     private static final String RV_NO_FIND_QUERY = "SELECT rv_no FROM REVIEW_TB WHERE user_id = ? AND store_name = ? AND r_time = ?";
     // REVIEW_TB에서 r_no 찾기
@@ -70,7 +71,8 @@ public class ReviewDAO {
                     vo.getRvPrice(),
                     vo.getRvTaste(),
                     vo.getRvVibe(),
-                    vo.getRvKind()
+                    vo.getRvKind(),
+                    vo.getRvContent()
             );
             return rowsAffected > 0;
         } catch (DataAccessException e) {
@@ -92,6 +94,7 @@ public class ReviewDAO {
                     vo.getRvTaste(),
                     vo.getRvVibe(),
                     vo.getRvKind(),
+                    vo.getRvContent(),
                     rvNo
             );
             return rowsAffected > 0;
@@ -123,27 +126,25 @@ public class ReviewDAO {
     public Integer getReservationRNo(String userId, String storeName, String rTime) {
         try {
             return jdbcTemplate.queryForObject(R_NO_FIND_QUERY, Integer.class, userId, storeName, rTime);
+        } catch (EmptyResultDataAccessException e) {
+            log.error("예약 번호를 찾을 수 없습니다. userId: {}, storeName: {}, rTime: {}", userId, storeName, rTime);
+            return null; // 데이터가 없을 경우 null 반환
         } catch (DataAccessException e) {
             log.error("예약 번호 조회 중 예외 발생", e);
-            return null;
+            throw e;
         }
     }
+
     // 리뷰 번호 조회
     public Integer getReviewRvNo(String userId, String storeName, String rTime) {
         try {
             return jdbcTemplate.queryForObject(RV_NO_FIND_QUERY, Integer.class, userId, storeName, rTime);
+        } catch (EmptyResultDataAccessException e) {
+//            log.error("리뷰 번호 조회 중 예외 발생", e);
+            log.error("리뷰 번호를 찾을 수 없습니다. userId: {}, storeName: {}, rTime: {}", userId, storeName, rTime);
+            return null; // 데이터가 없을 경우 null 반환
         } catch (DataAccessException e) {
             log.error("리뷰 번호 조회 중 예외 발생", e);
-            return null;
-        }
-    }
-    // 리뷰 존재 확인
-    public boolean countReviewForReservation(int rNo) {
-        try {
-            int count = jdbcTemplate.queryForObject(REVIEW_COUNT_QUERY, Integer.class, rNo);
-            return count > 0;   // 리뷰가 있으면 true, 없으면 false
-        } catch (DataAccessException e) {
-            log.error("리뷰 존재 여부 확인 중 예외 발생", e);
             throw e;
         }
     }
@@ -162,7 +163,8 @@ public class ReviewDAO {
                     rs.getBigDecimal("rv_price"),
                     rs.getBigDecimal("rv_taste"),
                     rs.getBigDecimal("rv_vibe"),
-                    rs.getBigDecimal("rv_kind")
+                    rs.getBigDecimal("rv_kind"),
+                    rs.getString("rv_content")
             );
         }
     }

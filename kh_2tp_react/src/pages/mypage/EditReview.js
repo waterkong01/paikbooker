@@ -1,136 +1,152 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import AxiosApi from "../../api/AxiosApi";
-import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Rating } from "@mui/material";
+import { Container, ReviewUser, ReviewForm, RatingBox, ReviewRating, ReviewButton, ReviewContent } from "../../components/ReviewComponent";
 
-const ReviewInput = styled.input`
-    width: 50%;
-    height: 30px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    padding: 5px;
-`
-export const ReviewEditContainer = styled.div`
-    margin: 100px auto;
-    width: 50%;
-`
 const EditReview = () => {
     const location = useLocation(); // URL에서 쿼리 파라미터 받기
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
 
-    const [userId, setUserId] = useState(queryParams.get('userId'));  // 사용자 ID (기본값은 빈 문자열)
-    const [storeName, setStoreName] = useState(queryParams.get('storeName'));  // 매장명 (기본값은 빈 문자열)
-    const [rTime, setRTime] = useState(queryParams.get('rTime'));  // 예약 날짜/시간 (기본값은 빈 문자열)
+    const [userId, setUserId] = useState(queryParams.get('userId'));  // 사용자 ID
+    const [storeName, setStoreName] = useState(queryParams.get('storeName'));  // 매장명
+    const [rSubmitTime, setRSubmitTime] = useState(queryParams.get('rSubmitTime'));  // 예약 날짜
+    const [rTime, setRTime] = useState(queryParams.get('rTime'));  // 예약 날짜/시간
     const [rvPrice, setRvPrice] = useState(parseFloat(queryParams.get('rvPrice'))); // 별점(가격)
     const [rvTaste, setRvTaste] = useState(parseFloat(queryParams.get('rvTaste'))); // 별점(맛)
     const [rvVibe, setRvVibe] = useState(parseFloat(queryParams.get('rvVibe')));   // 별점(분위기)
     const [rvKind, setRvKind] = useState(parseFloat(queryParams.get('rvKind')));   // 별점(친절도)
-  
+    const [rvContent, setRvContent] = useState(queryParams.get('rvContent'));   // 리뷰 텍스트
+
     const handleSubmit = async(e) => {
         e.preventDefault();
 
         const reviewData = {
             userId: userId,
             storeName: storeName,
+            rSubmitTime: rSubmitTime,
             rTime: rTime,
             rvPrice: rvPrice,
             rvTaste: rvTaste,
             rvVibe: rvVibe,
-            rvKind: rvKind
+            rvKind: rvKind,
+            rvContent: rvContent
         };
+
+        console.log("제출된 리뷰 수정 데이터:", reviewData);
         try {
             const response = await AxiosApi.reviewUpdate(reviewData);
             console.log(response);
             alert('리뷰가 수정되었습니다!');
-            navigate("/"); // 수정 성공 시 리뷰 리스트 페이지로 이동
+            navigate("/auth"); // 수정 성공 시 리뷰 리스트 페이지로 이동
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);
             alert('리뷰 수정 중 오류가 발생했습니다: ' + error.message);
         }
     };
 
+    const textRef = useRef();
+        const handleResizeHeight = useCallback(() => {
+        textRef.current.style.height = textRef.current.scrollHeight + "px";
+    }, []);
+
     return (
-        <ReviewEditContainer>
+        <Container>
             <h2>리뷰 수정</h2>
-            <form onSubmit={handleSubmit}>
+            <ReviewForm onSubmit={handleSubmit}>
                 <div>
-                    <label>사용자 ID</label>
-                    <ReviewInput
+                    <ReviewUser
                         type="text"
                         value={userId}
                         onChange={(e) => setUserId(e.target.value)}
                         required
                         readOnly
-                    />
+                    />님
                 </div>
                 <div>
-                    <label>매장명</label>
-                    <ReviewInput
+                    <ReviewUser
                         type="text"
-                        value={storeName}
-                        onChange={(e) => setStoreName(e.target.value)}
+                        value={rSubmitTime}
+                        onChange={(e) => setRSubmitTime(e.target.value)}
                         required
                         readOnly
                     />
-                </div>
-                <div>
-                    <label>방문 시간</label>
-                    <ReviewInput
+                    &nbsp;
+                    <ReviewUser
                         type="text"
                         value={rTime}
                         onChange={(e) => setRTime(e.target.value)}
                         required
                         readOnly
                     />
+                    <span>:00 에 방문하신</span>
                 </div>
                 <div>
-                    <label>가격 별점</label>
-                    <Rating
-                        name="price-rating"
-                        value={rvPrice}
-                        onChange={(e, newValue) => setRvPrice(newValue)}
+                    <span>'</span>
+                    <ReviewUser
+                        type="text"
+                        value={storeName}
+                        onChange={(e) => setStoreName(e.target.value)}
                         required
-                        precision={0.5}
+                        readOnly
                     />
+                    <span>' 이 어떠셨는지 별점을 남겨주세요!</span>
                 </div>
-                <div>
-                    <label>맛 별점</label>
-                    <Rating
-                        name="taste-rating"
-                        value={rvTaste}
-                        onChange={(e, newValue) => setRvTaste(newValue)}
-                        required
-                        precision={0.5}
-                    />
-                </div>
-                <div>
-                    <label>분위기 별점</label>
-                    <Rating
-                        name="vibe-rating"
-                        value={rvVibe}
-                        onChange={(e, newValue) => setRvVibe(newValue)}
-                        required
-                        precision={0.5}
-                    />
-                </div>
-                <div>
-                    <label>
-                        친절도 별점</label>
-                    <Rating
-                        name="kindness-rating"
-                        value={rvKind}
-                        onChange={(e, newValue) => setRvKind(newValue)}
-                        required
-                        precision={0.5}
-                    />
-                </div>
-                <button type="submit">리뷰 수정</button>
-            </form>
-        </ReviewEditContainer>
+                <RatingBox>
+                    <ReviewRating>
+                        <label>가격</label>
+                        <Rating
+                            name="price-rating"
+                            value={rvPrice}
+                            onChange={(e, newValue) => setRvPrice(newValue)}
+                            required
+                            precision={0.5}
+                        />
+                    </ReviewRating>
+                    <ReviewRating>
+                        <label>맛</label>
+                        <Rating
+                            name="taste-rating"
+                            value={rvTaste}
+                            onChange={(e, newValue) => setRvTaste(newValue)}
+                            required
+                            precision={0.5}
+                        />
+                    </ReviewRating>
+                    <ReviewRating>
+                        <label>분위기</label>
+                        <Rating
+                            name="vibe-rating"
+                            value={rvVibe}
+                            onChange={(e, newValue) => setRvVibe(newValue)}
+                            required
+                            precision={0.5}
+                        />
+                    </ReviewRating>
+                    <ReviewRating>
+                        <label>친절도</label>
+                        <Rating
+                            name="kindness-rating"
+                            value={rvKind}
+                            onChange={(e, newValue) => setRvKind(newValue)}
+                            required
+                            precision={0.5}
+                        />
+                    </ReviewRating>
+                </RatingBox>
+                <ReviewContent
+                    type="textarea"
+                    maxLength="200"
+                    ref={textRef}
+                    value={rvContent}
+                    onChange={(e) => setRvContent(e.target.value)}
+                    placeholder="내용을 입력해주세요. 200자 이내. 생략 가능"
+                    onInput={handleResizeHeight} 
+                />
+                <ReviewButton type="submit">리뷰 수정</ReviewButton>
+            </ReviewForm>
+        </Container>
     );
 };
 

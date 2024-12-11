@@ -1,56 +1,15 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import AxiosApi from "../../api/AxiosApi";
-import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Rating } from "@mui/material";
-
-const Container = styled.div`
-    width: 50%;
-    margin:100px auto;
-    text-align: center;
-    border: 1px solid #000;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-    border-spacing: 15px;
-    font-size: 1rem;
-`
-const H2 = styled.h2`margin: 20px 0;`
-const ReviewUser = styled.input`
-    font-size: 1rem;
-    field-sizing: content;
-    border: none;
-    &:focus {
-        outline: none;
-    }
-`
-const ReviewForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    div {
-        margin-top: 10px;
-    }
-`
-const RatingBox = styled.div`
-    width: 22%;
-    display: flex;
-    flex-direction: column;
-`
-const ReviewRating = styled.div`
-    display: flex;
-    justify-content: space-between;
-`
-const ReviewButton = styled.button`
-    margin: 20px 0;
-    height: 40px;
-    aspect-ratio: 9 / 4;
-    border-radius: 5px; 
-`
+import { Container, ReviewUser, ReviewForm, RatingBox, ReviewRating, ReviewButton, ReviewContent } from "../../components/ReviewComponent";
 
 const AddReview = () => {
     const location = useLocation(); // URL에서 쿼리 파라미터 받기
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
 
+    // const [brandName, setBrandName] = useState(queryParams.get('brandName'));  // 브랜드명
     const [userId, setUserId] = useState(queryParams.get('userId'));  // 사용자 ID
     const [storeName, setStoreName] = useState(queryParams.get('storeName'));  // 매장명
     const [rSubmitTime, setRSubmitTime] = useState(queryParams.get('rSubmitTime'));  // 예약 날짜
@@ -59,6 +18,9 @@ const AddReview = () => {
     const [rvTaste, setRvTaste] = useState(0); // 별점(맛)
     const [rvVibe, setRvVibe] = useState(0);   // 별점(분위기)
     const [rvKind, setRvKind] = useState(0);   // 별점(친절도)
+    const [rvContent, setRvContent] = useState([]);   // 리뷰 텍스트
+
+    const isButtonEnabled = rvPrice > 0 && rvTaste > 0 && rvVibe > 0 && rvKind > 0;
   
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -71,13 +33,14 @@ const AddReview = () => {
             rvPrice: rvPrice,
             rvTaste: rvTaste,
             rvVibe: rvVibe,
-            rvKind: rvKind
+            rvKind: rvKind,
+            rvContent: rvContent
         };
 
         try {
             const response = await AxiosApi.reviewInsert(reviewData);
             console.log(response);
-            alert(`리뷰가 추가되었습니다!`);
+            alert('리뷰가 추가되었습니다!');
             navigate("/reservation"); // 추가 성공 시 리뷰 리스트 페이지로 이동
         } catch (error) {
             console.error(error.response ? error.response.data : error.message);
@@ -85,9 +48,29 @@ const AddReview = () => {
         }
     };
 
+    const textRef = useRef();
+        const handleResizeHeight = useCallback(() => {
+        textRef.current.style.height = textRef.current.scrollHeight + "px";
+    }, []);
+
+
+/*     const brandStyles = {
+        "한신포차": {
+          border: "2px solid #ff3920",  // Nike에 대한 스타일
+        },
+        "Adidas": {
+          backgroundColor: "#E1E1E1", 
+          color: "#333",
+          border: "2px solid #000",  // Adidas에 대한 스타일
+        },
+    };
+      
+    const currentBrandStyle = brandStyles[brandName] || {}; */
+
     return (
+        // <Container style={currentBrandStyle}>
         <Container>
-            <H2>리뷰 추가</H2>
+            <h2>리뷰 추가</h2>
             <ReviewForm onSubmit={handleSubmit}>
                 <div>
                     <ReviewUser
@@ -169,7 +152,16 @@ const AddReview = () => {
                         />
                     </ReviewRating>
                 </RatingBox>
-                <ReviewButton type="submit">리뷰 추가</ReviewButton>
+                <ReviewContent
+                    type="textarea"
+                    maxLength="200"
+                    ref={textRef}
+                    value={rvContent}
+                    onChange={(e) => setRvContent(e.target.value)}
+                    placeholder="내용을 입력해주세요. 200자 이내. 생략 가능"
+                    onInput={handleResizeHeight}
+                />
+                <ReviewButton type="submit" disabled={!isButtonEnabled}>리뷰 추가</ReviewButton>
             </ReviewForm>
         </Container>
     );

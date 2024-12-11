@@ -2,12 +2,23 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AxiosApi from "../../api/AxiosApi";
 import styled from "styled-components";
+import { ReviewContainer, StyledTable } from "../../components/ReviewComponent";
 
-const StyledTable = styled.table`
-    width: 90%;
-    margin: auto;
-    background-color: palegoldenrod;
-    text-align: center;
+const ReviewLink = styled(Link)`
+    text-decoration: none;
+    color: #000;
+    &:active {
+        color: #FFF;
+    } 
+`
+export const ReviewButton = styled.button`
+    height: 40px;
+    aspect-ratio: 7 / 4;
+    border-radius: 5px;
+    &:active {
+        background-color: #000;
+        color: #FFF;
+    } 
 `
 
 const Reservation = () => {
@@ -28,7 +39,7 @@ const Reservation = () => {
     }, []);
 
     return (
-        <>
+        <ReviewContainer>
             <StyledTable>
                 <thead>
                     <tr>
@@ -49,22 +60,24 @@ const Reservation = () => {
                         reservations &&
                         reservations.map(reservation => (
                             <tr key={reservation.userId}>
-                                <td>{reservation.rno}</td>
+                                <td>{reservation.rNo}</td>
                                 <td>{reservation.userId}</td>
                                 <td>{reservation.userName}</td>
                                 <td>{reservation.storeNo}</td>
                                 <td>{reservation.storeName}</td>
                                 <td>{reservation.storePhone}</td>
-                                <td>{reservation.rpersonCnt}</td>
-                                <td>{reservation.rtime}</td>
-                                <td>{reservation.rsubmitTime}</td>
+                                <td>{reservation.rPersonCnt}</td>
+                                <td>{reservation.rTime}:00</td>
+                                <td>{reservation.rSubmitTime}</td>
                                 <td>{reservation.brandName}</td>
                                 <td>
-                                    <button>
-                                        <Link to={`/AddReview?userId=${reservation.userId}&storeName=${reservation.storeName}&rTime=${reservation.rtime}`} className="link_style">
-                                            <span>리뷰 추가</span>
-                                        </Link>
-                                    </button>
+                                    {!reservation.hasReview && ( // hasReview가 false일 때만 버튼 렌더링
+                                        <ReviewButton>
+                                            <ReviewLink to={`/AddReview?userId=${reservation.userId}&storeName=${reservation.storeName}&rSubmitTime=${reservation.rSubmitTime}&rTime=${reservation.rTime}&brandName=${reservation.brandName}`} className="link_style">
+                                                <span>리뷰 추가</span>
+                                            </ReviewLink>
+                                        </ReviewButton>
+                                    )}
                                 </td>
                             </tr>
                         ))
@@ -75,7 +88,7 @@ const Reservation = () => {
                     )}
                 </tbody>
             </StyledTable>
-        </>
+        </ReviewContainer>
     );
 }
 

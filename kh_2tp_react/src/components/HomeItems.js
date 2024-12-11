@@ -176,6 +176,7 @@ const Stores = styled.div`
   width: 920px;
   white-space: nowrap;
   scroll-behavior: smooth;
+  overflow-x: hidden;
   position: relative;
 `;
 
@@ -322,23 +323,25 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
     return <div>No stores available</div>;
   }
 
-  const scrollLeft = () => {
-    if (containerRefs.current[0]) {
-      containerRefs.current[0].scrollBy({
+  const scrollLeft = (index) => {
+    const ref = containerRefs.current[index]; // 해당 index의 ref 요소를 찾음
+    if (ref) {
+      ref.scrollBy({
         left: -300,
         behavior: "smooth",
       });
-      console.log(containerRefs.current[0]);
+      console.log(`Scroll Left on ref[${index}]`, ref); // 확인용
     }
   };
 
-  const scrollRight = () => {
-    if (containerRefs.current[0]) {
-      containerRefs.current[0].scrollBy({
+  const scrollRight = (index) => {
+    const ref = containerRefs.current[index]; // 해당 index의 ref 요소를 찾음
+    if (ref) {
+      ref.scrollBy({
         left: 300,
         behavior: "smooth",
       });
-      console.log(containerRefs.current[0]);
+      console.log(`Scroll Right on ref[${index}]`, ref); // 확인용
     }
   };
 
@@ -386,20 +389,18 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
               </BrandMain>
 
               <StoresContainer>
-                <ArrowButton className="left-arrow" onClick={scrollLeft}>
+                <ArrowButton className="left-arrow" onClick={() => scrollLeft(index)}>
                   &lt;
                 </ArrowButton>
                 <Stores ref={setRef(index)}>
-                {" "}
-                {/* 각 store에 고유 ref 할당 */}
-                
+                  {" "}
+                  {/* 각 store에 고유 ref 할당 */}
                   {brandData.stores.map((store) => (
                     <StyledLink
                       to={`/stores/${store.storeNo}`}
                       key={store.storeNo}
                     >
                       <EachStore>
-
                         <EachImage
                           style={{
                             backgroundImage: `url(${brandData.brand.brandImg1})`,
@@ -429,7 +430,7 @@ const HomeItem = ({ dataReceivedAfterSearch }) => {
                     </StyledLink>
                   ))}
                 </Stores>
-                <ArrowButton className="right-arrow" onClick={scrollRight}>
+                <ArrowButton className="right-arrow" onClick={() => scrollRight(index)}>
                   &gt;
                 </ArrowButton>
               </StoresContainer>
