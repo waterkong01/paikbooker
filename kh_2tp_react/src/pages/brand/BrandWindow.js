@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AxiosApi from "../../api/AxiosApi";
 import styled from "styled-components";
@@ -107,11 +107,11 @@ const SortBy = styled.div`
 `;
 
 const BrandStoresBlock = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  `;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+`;
 
 const BrandContainer = styled.div`
   width: 1280px;
@@ -119,7 +119,7 @@ const BrandContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   background-color: #e3e3e3;
   border-radius: 10px;
 `;
@@ -135,19 +135,21 @@ const BrandLogo = styled.div`
 
 const StoresContainer = styled.div`
   width: 1280px;
+  padding-left: 3.5px;
+  padding-bottom: 100px;
   margin: 0 auto;
   position: relative;
   display: flex;
   align-items: center;
   white-space: nowrap;
-  justify-content: center;
+  justify-content: baseline;
   gap: 20px;
 `;
 
 const EachStore = styled.div`
   box-sizing: border-box;
   width: 195px;
-  height: 200px;
+  height: 160px;
   border-radius: 10px;
   background-color: #e3e3e3;
   overflow: hidden;
@@ -179,8 +181,9 @@ const EachTextContainer = styled.div`
 
 const EachText1 = styled.div`
   box-sizing: border-box;
-  padding-top: 10px;
-  height: 29px;
+  width: 175px;
+  padding-top: 5px;
+  height: 24px;
   font-size: 0.8em;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -192,6 +195,13 @@ const EachText1 = styled.div`
 const EachText2 = styled.div`
   box-sizing: border-box;
   font-size: 0.7em;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  transition: color 0.3s;
 `;
 
 const BrandWindow = () => {
@@ -276,17 +286,18 @@ const BrandWindow = () => {
       </SortBy>
       <BrandStoresBlock>
         <BrandContainer>
-            <BrandLogo
-              style={{
-                backgroundImage: `url(${
-                  brandData[0].brandVO.brandLogo2 || "defaultLogoURL"
-                })`,
-              }}
-            />
-          </BrandContainer>
+          <BrandLogo
+            style={{
+              backgroundImage: `url(${
+                brandData[0].brandVO.brandLogo2 || "defaultLogoURL"
+              })`,
+            }}
+          />
+        </BrandContainer>
 
-          <StoresContainer>
-            {brandData.map((store) => (
+        <StoresContainer>
+          {brandData.map((store) => (
+            <StyledLink to={`/stores/${store.storeNo}`} key={store.storeNo}>
               <EachStore key={store.storeNo}>
                 <EachImage
                   style={{
@@ -314,8 +325,9 @@ const BrandWindow = () => {
                   </EachText2>
                 </EachTextContainer>
               </EachStore>
-            ))}
-          </StoresContainer>
+            </StyledLink>
+          ))}
+        </StoresContainer>
       </BrandStoresBlock>
     </>
   );

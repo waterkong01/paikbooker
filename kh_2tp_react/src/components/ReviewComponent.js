@@ -12,6 +12,9 @@ export const StyledTable = styled.table`
     border-radius: 10px;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
     border-spacing: 15px;
+    tr {
+        height: 43px;
+    }
 `
 // 공통 컨테이너 스타일
 export const Container = styled.div`

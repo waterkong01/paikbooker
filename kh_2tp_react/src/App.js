@@ -16,6 +16,7 @@ import Modal from "./components/Modal";
 import { useState } from "react";
 import Member from "./pages/member/Member";
 import MemberInfo from "./pages/member/MemberInfo";
+import MemberDetail from "./pages/member/MemberDetail";
 import UserStore from "./context/UserStore";
 import BrandWindow from "./pages/brand/BrandWindow";
 
@@ -44,7 +45,9 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/Member" element={<Member />} />
+              <Route path="/MemberDetail/:id" element={<MemberDetail />} />
               <Route path="/member/MemberInfo" element={<MemberInfo />} />
+              {/* <Route path="/MemberDetail" element={<MemberDetail />} /> */}
               <Route path="/brand/:brandNo" element={<BrandWindow />} />
             </Route>
           </Routes>

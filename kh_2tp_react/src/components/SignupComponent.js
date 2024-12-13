@@ -33,6 +33,14 @@ export const Items = styled.div`
   color: ${(props) => props.color || "inherit"};
 
   ${(props) =>
+    props.variant === "title" &&
+    css`
+      font-size: 16px;
+      margin: 0 40px;
+      justify-content: normal;
+    `}
+
+  ${(props) =>
     props.variant === "sign" &&
     css`
       font-size: 30px;
